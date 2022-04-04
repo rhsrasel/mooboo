@@ -1,0 +1,25 @@
+<div class="row position-relative">
+  {% for image in product.images limit: 4 %}
+  {%- if product.images.size > 1 -%}
+  <div class="col-lg-6 col-md-12 col-12 mb-20">
+    {%- comment -%} "product_variant_image" this Class is needed for Ajax popup cart {%- endcomment -%}
+    <img class="product_variant_image {% if section.settings.product_zoom_enable %}product-zoom{% endif %}" 
+         alt="{{ image.alt | escape }}"
+         data-image-id="{{ image.id }}" alt="{{ image.src.alt | escape }}" 
+         data-zoom-image="{{ image.src | img_url: '1024x1024' }}" 
+         src="{{ image.src | img_url: '1024x1024' }}">
+  </div>
+  {%- else -%}
+  <div class="col-md-12 col-12 mb-20">
+    {%- comment -%} "product_variant_image" this Class is needed for Ajax popup cart {%- endcomment -%}
+    <img class="product_variant_image {% if section.settings.product_zoom_enable %}product-zoom{% endif %}" 
+         alt="{{ image.alt | escape }}"
+         data-image-id="{{ image.id }}" alt="{{ image.src.alt | escape }}" 
+         data-zoom-image="{{ image.src | img_url: '1024x1024' }}" 
+         src="{{ image.src | img_url: '1024x1024' }}">
+  </div>
+  {%- endif -%}  
+  {% endfor %}
+
+  {%- include 'product-badge' -%}
+</div>

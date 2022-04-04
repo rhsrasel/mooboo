@@ -1,0 +1,27 @@
+{% form 'contact' %}
+
+{% if form.posted_successfully? %}
+<p class="note form-success">{{ 'contact.form.post_success' | t }}</p>
+{% endif %}
+
+{{ form.errors | default_errors }}
+<p>
+  <input type="text" placeholder="{{ section.settings.name_placeholder }}" class="{% if form.errors contains 'name' %}error{% endif %}" name="contact[name]" id="ContactFormName" value="{% if form.name %}{{ form.name }}{% elsif customer.name %}{{ customer.name }}{% endif %}">
+</p>
+
+<p>
+
+  <input type="email" placeholder="{{ section.settings.email_placeholder }}" class="{% if form.errors contains 'email' %}error{% endif %}" name="contact[email]" id="ContactFormEmail" value="{% if form.email %}{{ form.email }}{% elsif customer.email %}{{ customer.email }}{% endif %}">
+</p>
+
+<p>
+  <input type="text" id="ContactFormSubject" name="contact[subject]" placeholder="{{ section.settings.subject_placeholder }}" value="{{ form.subject }}">
+</p>
+
+<div class="contact_textarea">
+  <textarea placeholder="{{ section.settings.message_placeholder }}" class="custom-textarea" name="contact[body]" id="ContactFormMessage">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+</div>
+<div class="contact-btn">
+  <button type="submit">{{ section.settings.form_button_name }}</button>
+</div>
+{% endform %}

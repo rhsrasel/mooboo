@@ -1,0 +1,13 @@
+{% if settings.breadcrumb_banner_enable %}
+<div class="breadcrumbs_area breadcrumbs-section breadcrumbs overlay-bg{% if settings.bread_width == 'full_wide' %} section_full_wide{% endif %}">
+  <div class="container{% if settings.bread_width == 'full_wide' %}-fluid{% endif %}">   
+    <div class="row">
+      <div class="col-12">
+        <div class="breadcrumb_content breadcrumbs-inner">
+          {% include 'breadcrumb-builtin' %}
+        </div>
+      </div>
+    </div>
+  </div>        
+</div>
+{% endif %}

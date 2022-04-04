@@ -1,0 +1,401 @@
+{%- assign sset = section.settings -%}
+
+<section class="blog_section{% if sset.section_width == 'full_wide' %} plr-120{% endif %}" id="{{ sset.section_id }}">
+  <div class="container{% if sset.section_width == 'full_wide' %}-fluid{% endif %}">
+    {%- if sset.section_title != '' or sset.section_subtitle != '' -%}
+    <div class="row">
+      <div class="col-12">
+        <div class="section_title">
+          {%- if sset.section_title != '' -%}
+          <h2 style="color:{{ sset.section_title_color }};">{{ sset.section_title }}</h2>{%- endif -%}
+
+          {%- if sset.section_subtitle != '' -%}
+          <p style="color:{{ sset.section_subtitle_color }};">{{ sset.section_subtitle }}</p>{%- endif -%}
+        </div>
+      </div>
+    </div>{%- endif -%}
+
+    <div class="row">
+      <div class="blog_wrapper blog_column3 owl-carousel{% if sset.show_border_btm %} lbborder{% endif %}" style="{% if sset.show_border_btm %}border-bottom: 1px solid {{ sset.border_btm_color }};{% else %}none;{% endif %}">
+        {%- assign blog = blogs[sset.blog_handle] -%}
+        {%- assign blog_limit = sset.blog_limit_handle -%}
+
+        {%- if blog == empty -%}{%- for i in (1..blog_limit) -%}
+        <div class="col-lg-4">
+          <div class="single_blog">
+            <div class="blog_thumb">
+              <a href="blog-details.html" style="background: #f2f2f2">{{ 'image' | placeholder_svg_tag }}</a>
+              <div class="blog_icon">
+                <a href="blog-details.html"></a>
+              </div>
+            </div>
+            <div class="blog_content">
+              <h3><a href="blog-details.html">Blog Title</a></h3>
+              <div class="author_name">
+                <p> 
+                  <span class="post_by">by</span>
+                  <span class="themes">Mooboo Themes</span>
+                  / 30 Oct 2019
+                </p>
+              </div>
+              <div class="post_desc">
+                <p>Maria Denardo is the Fashion Director at theFashionSpot. Prior to joining tFS, she worked as...</p>
+              </div>
+            </div>
+          </div>
+        </div>{%- endfor -%}{%- else -%}
+
+        {%- for article in blog.articles limit: blog_limit -%}
+        <div class="col-lg-4">
+          {%- include 'blog-grid-item' -%}
+        </div>{%- endfor -%}{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{%- style -%}
+{%- include 'section-settings' -%}
+{%- endstyle -%}
+
+
+<script>
+  $('.blog_column3').owlCarousel({
+    {% if settings.rtl_enable %}
+    rtl: true,
+    {% endif %}
+    navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+    autoplay: true,
+    loop: true,
+    nav: true,
+    autoplay: false,
+    autoplayTimeout: 8000,
+    items: 3,
+    dots:false,
+    responsiveClass:true,
+    responsive:{
+      0:{
+        items:1
+      },
+      768:{
+        items:2
+      },
+      992:{
+        items:3
+      },
+      1200:{
+        items:{{ sset.blog_column }}
+      }
+    }
+  });
+</script>
+
+
+{% schema %}
+  {
+    "name": "Latest Blog",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_id",
+            "label": "Section ID",
+            "default": "latest-blog"
+        },
+		{
+			"type": "header",
+            "content": "Section Heading"
+        },
+		{
+          "type": "text",
+          "id": "section_title",
+          "label": "Section Title",
+          "default": "Latest Blogs"
+      	},
+		{
+          "type": "text",
+          "id": "section_subtitle",
+          "label": "Section Subtitle",
+          "default": "Contemporary, minimal and modern designs embody the Lavish Alice handwriting"
+      	},
+		{
+			"type": "color",
+			"id": "section_title_color",
+			"label": "Section Title Color",
+			"default": "#242424"
+		},
+		{
+			"type": "color",
+			"id": "section_subtitle_color",
+			"label": "Section Subtitle Color",
+			"default": "#747474"
+		},
+		{
+			"type": "header",
+            "content": "Blog"
+        },
+		{
+          "type": "blog",
+          "id": "blog_handle",
+          "label": "Select Blog"
+        },
+		{
+            "type": "range",
+            "id": "blog_limit_handle",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "label": "Limit",
+            "default": 20
+        },
+		{
+          "type": "select",
+          "id": "blog_column",
+          "label": "How many blog post want to slide?",
+		  "options":[
+				{
+                    "label": "1",
+                    "value": "1"
+                },
+				{
+                    "label": "2",
+                    "value": "2"
+                },
+                {
+                    "label": "3",
+                    "value": "3"
+                },
+                {
+                    "label": "4",
+                    "value": "4"
+                }
+			],
+			"default": "3"
+      	},
+		{
+			"type": "header",
+			"content": "Section Settings"
+		},
+		{
+          "type": "checkbox",
+          "id": "show_border_btm",
+          "label": "Show Border Bottom",
+          "default": false
+      	},
+		{
+          "type": "color",
+          "id": "border_btm_color",
+          "label": "Border Bottom Color",
+          "default": "#ddd"
+      	},
+        {
+            "type": "radio",
+            "id": "section_width",
+            "label": "Section Width",
+            "options": [
+                {
+                  "label": "Default",
+                  "value": "default"
+                },
+                {
+                  "label": "Full Wide",
+                  "value": "full_wide"
+                }
+            ],
+            "default": "default"
+        }
+    ],
+	"blocks":[
+	   {
+          "type": "section_padding",
+          "name": "Section Padding",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 100
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 80
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 60
+			}
+          ]
+       },
+	   {
+          "type": "section_margin",
+          "name": "Section Margin",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			}
+          ]
+       },
+	   {
+          "type": "section_background",
+          "name": "Section Background",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "image_picker",
+			  "id": "section_bg_image",
+			  "label": "BG Image"
+			},
+			{
+			  "type": "color",
+			  "id": "section_bg_color",
+			  "label": "BG Color",
+			  "default": "#ffffff"
+			}
+          ]
+       }
+	],
+	"presets": [
+		{
+		  "name": "Latest Blog",
+		  "category": "4. blog"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+
+

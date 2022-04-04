@@ -1,0 +1,422 @@
+{%- assign sset = section.settings -%}{%- if sset.show_ft_bottom -%}
+
+<div class="footer_bottom{% if sset.ft_width == 'full_wide' %} footer_compressed{% endif %}" id="section-{{ section.id }}">
+  {%- if sset.border_style == 'full' -%}
+  <div class="moo_footerbtm_border">{%- endif -%}
+    <div class="container{% if sset.ft_width == 'full_wide' %}-fluid{% endif %}">
+      {%- if sset.border_style == 'default' -%}
+      <div class="moo_footerbtm_border">{%- endif -%}
+        <div class="row">
+          {%- for block in section.blocks -%}{%- case block.type -%}
+          {%- when 'copyright' -%}{%- assign bset = block.settings -%}
+          <div class="col-lg-{{ bset.c_col }} col-md-{{ bset.c_col }}{% if bset.t_align_center %} text-center{% endif %}">
+            <div class="copyright_area">
+              <p>{{ bset.copyright_text }}</p>
+            </div>
+          </div>
+
+          {%- when 'ft_menu' -%}{%- assign bset = block.settings -%}
+          <div class="col-lg-{{ bset.c_col }} col-md-{{ bset.c_col }}">
+            <div class="footer_custom_links{% if bset.t_align_center %} text-center{% endif %}">
+              <ul>
+                {%- assign ft_menu = bset.ft_menu_handle -%}
+                {%- for link in linklists[ft_menu].links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          </div>{%- endcase -%}{%- endfor -%}
+        </div>
+        {%- if sset.border_style == 'default' -%}
+      </div>{%- endif -%}
+    </div>
+    {%- if sset.border_style == 'full' -%}
+  </div>{%- endif -%}
+</div>
+
+
+
+{%- style -%}
+  .moo_footerbtm_border {
+    border-top: {% if sset.show_border_top %}1px solid {{ sset.border_top_color }}{% else %}none{% endif %};
+  }
+  .copyright_area p, .footer_custom_links ul li a {
+    color: {{ sset.content_color }};
+  }
+  .copyright_area p a:hover, .copyright_area p a, .footer_custom_links ul li a:hover {
+    color: {{ settings.theme_color }};
+  }
+  #section-{{ section.id }} {
+    {%- for block in section.blocks -%}{%- case block.type -%}
+    {%- when 'section_margin' -%}{%- assign bset = block.settings -%}
+    margin-top: {{ bset.section_margin_top }}px;
+    margin-bottom: {{ bset.section_margin_bottom }}px;
+    {%- when 'section_background' -%}{%- assign bset = block.settings -%}
+    background: {{ bset.section_bg_color }} 
+      {%- if bset.section_bg_image -%}url("{{ bset.section_bg_image | img_url: 'master' }}"){%- endif -%} no-repeat scroll center center / cover;
+    {%- endcase -%}{%- endfor -%}
+  }
+    .moo_footerbtm_border {
+      {%- for block in section.blocks -%}{%- case block.type -%}
+      {%- when 'section_padding' -%}{%- assign bset = block.settings -%}
+      padding-top: {{ bset.section_padding_top }}px;
+      padding-bottom: {{ bset.section_padding_bottom }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+        
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    #section-{{ section.id }}{
+      {%- for block in section.blocks -%}{% case block.type %}
+      {%- when 'section_margin' -%}{%- assign bset = block.settings -%}
+      margin-top: {{ bset.section_margin_top_md }}px;
+      margin-bottom: {{ bset.section_margin_bottom_md }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+    .moo_footerbtm_border {
+      {%- for block in section.blocks -%}{%- case block.type -%}
+      {%- when 'section_padding' -%}{%- assign bset = block.settings -%}
+      padding-top: {{ bset.section_padding_top_md }}px;
+      padding-bottom: {{ bset.section_padding_bottom_md }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+  }
+  @media (max-width: 767px) {
+    #section-{{ section.id }}{
+      {%- for block in section.blocks -%}{%- case block.type -%}
+      {%- when 'section_margin' -%}{%- assign bset = block.settings -%}
+      margin-top: {{ bset.section_margin_top_xs }}px;
+      margin-bottom: {{ bset.section_margin_bottom_xs }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+    .moo_footerbtm_border {
+      {%- for block in section.blocks -%}{%- case block.type -%}
+      {%- when 'section_padding' -%}{%- assign bset = block.settings -%}
+      padding-top: {{ bset.section_padding_top_xs }}px;
+      padding-bottom: {{ bset.section_padding_bottom_xs }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+  }
+{%- endstyle -%}{%- endif -%}
+
+
+
+{% schema %}
+  {
+    "name": "Footer Bottom",
+    "settings": [
+		{
+			"type": "checkbox",
+			"id": "show_ft_bottom",
+			"label": "Show Footer Bottom",
+			"default": true
+		},
+		{
+			"type": "color",
+			"id": "content_color",
+			"label": "Copyright Text Color",
+			"default": "#747474"
+		},
+		{
+			"type": "header",
+			"content": "Section Settings"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_border_top",
+			"label": "Show Border Top",
+			"default": false
+		},
+        {
+            "type": "radio",
+            "id": "border_style",
+            "label": "Border Top Style",
+            "options": [
+                {
+                  "label": "Default",
+                  "value": "default"
+                },
+                {
+                  "label": "Full Wide",
+                  "value": "full"
+                }
+            ],
+            "default": "default"
+        },
+		{
+			"type": "color",
+			"id": "border_top_color",
+			"label": "Border Top Color",
+			"default": "#ddd"
+		},
+        {
+            "type": "radio",
+            "id": "ft_width",
+            "label": "Select Section Width",
+            "options": [
+                {
+                  "label": "Default",
+                  "value": "default"
+                },
+                {
+                  "label": "Full Wide",
+                  "value": "full_wide"
+                }
+            ],
+            "default": "default"
+        }
+	],
+    "blocks": [
+		{
+			"type": "copyright",
+			"name": "Copyright Text",
+			"settings": [
+                {
+                    "type": "checkbox",
+                    "id": "t_align_center",
+                    "label": "Text Align = Center",
+                    "default": false
+                },
+                {
+                    "type": "radio",
+                    "id": "c_col",
+                    "label": "Select Column",
+                    "options": [
+                        {
+                          "label": "1",
+                          "value": "12"
+                        },
+                        {
+                          "label": "2",
+                          "value": "6"
+                        }
+                    ],
+                    "default": "6"
+                },
+				{
+					"type": "html",
+					"id": "copyright_text",
+					"label": "Text",
+					"default": "Copyright © <a href=\"#\">mooboo</a>  All Rights Reserved.",
+            		"info": "HTML code available"
+				}
+			]			
+		},
+		{
+			"type": "ft_menu",
+			"name": "Footer Menu",
+			"settings": [
+                {
+                    "type": "checkbox",
+                    "id": "t_align_center",
+                    "label": "Text Align = Center",
+                    "default": false
+                },
+                {
+                    "type": "radio",
+                    "id": "c_col",
+                    "label": "Select Column",
+                    "options": [
+                        {
+                          "label": "1",
+                          "value": "12"
+                        },
+                        {
+                          "label": "2",
+                          "value": "6"
+                        }
+                    ],
+                    "default": "6"
+                },
+				{
+					"type": "link_list",
+					"id": "ft_menu_handle",
+					"label": "Select Menu"
+				}
+			]			
+		},
+	   {
+          "type": "section_margin",
+          "name": "Section Margin",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			}
+          ]
+       },
+	   {
+          "type": "section_padding",
+          "name": "Section Padding",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 25
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 25
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 25
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 25
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 25
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 25
+			}
+          ]
+       },
+	   {
+          "type": "section_background",
+          "name": "Section Background",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "image_picker",
+			  "id": "section_bg_image",
+			  "label": "BG Image"
+			},
+			{
+			  "type": "color",
+			  "id": "section_bg_color",
+			  "label": "BG Color",
+			  "default": "#ffffff"
+			}
+          ]
+       }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

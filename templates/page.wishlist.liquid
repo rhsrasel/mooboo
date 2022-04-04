@@ -1,0 +1,33 @@
+<div class="customer-page shop_area moo_section_margin">
+  <div class="container">
+    <div class="wishlist-page">
+      {% if customer %}
+      <div class="full-width-container wishlist-container">
+        <div class="wishlist-grid row">
+          {% for product in collections.all.products %}
+          <div class="col-xl-3 col-lg-4 col-md-6 wishlist-product-item product-tile-container wishlist-tile-container test-class" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}">
+            {% include 'product-grid-item' %}
+          </div>
+          {% endfor %}
+
+          <div class="empty-cart-page cart-shiping-update empty-list--info wishlist-grid--empty-list">
+            <div class="empty-list--info">
+              <h3 class="empty-list--text black mb-20">{{ settings.wishlist_empty_title }}</h3>
+              <a class="theme-default-button" href="/collections/all">{{ settings.continue_browsing }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="wishlist-loader" style="display: none;">
+          <p class="wishlist-loader--text">Loading...</p>
+        </div>
+      </div>
+      {% else %}
+      <div class="login-wishlist">
+        <h3 class="mb-20">{{ settings.login_request_title }}</h3>
+        <a class="theme-default-button" href="/account/login">{{ settings.wish_login_btn }}</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

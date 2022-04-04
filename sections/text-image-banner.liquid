@@ -1,0 +1,392 @@
+{%- assign sset = section.settings -%}
+
+<section class="banner_section{% if sset.hover_style == 'style_1' %} banner_section_three{% else %} banner_section_two banner_seven{% endif %}" id="{{ sset.section_id }}">
+  <div class="container{% if sset.section_width == 'full_wide' %}-fluid{% endif %}">
+    <div class="row ">
+      {%- for block in section.blocks -%}{%- case block.type -%}
+      {%- when 'img_banner' -%}{%- assign bset = block.settings -%}
+      <div class="col-lg-{{ bset.ban_col }} col-md-{{ bset.ban_col }}">
+        <div class="banner_area">
+          <div class="banner_thumb">
+            <a href="{{ bset.btn_url }}">
+              {%- if bset.ban_img -%}
+              <img src="{{ bset.ban_img | img_url: 'master' }}" alt="{{ image.alt }}">
+              {%- else -%}
+              <img src="https://via.placeholder.com/930x440" alt="{{ image.alt }}">
+              {%- endif -%}
+            </a>
+            <div class="banner_content">
+              {%- if bset.title1 != '' -%}
+              <h1 style="color: {{ bset.title1_color }};font-size: {{ bset.title1_font_size }}px">{{ bset.title1 }}</h1>{%- endif -%}
+
+              {%- if bset.btn != '' -%}
+              <a href="{{ bset.btn_url }}">{{ bset.btn }}</a>{%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>{%- endcase -%}{%- endfor -%}
+    </div>
+  </div>
+</section>
+
+
+{%- style -%}
+{%- include 'section-settings' -%}
+{%- endstyle -%}
+
+
+
+{% schema %}
+  {
+    "name": "Text-Img Banner",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_id",
+            "label": "Section ID",
+            "default": "text-img-banner"
+        },
+        {
+            "type": "radio",
+            "id": "section_width",
+            "label": "Section Width",
+            "options": [
+                {
+                  "label": "Default",
+                  "value": "default"
+                },
+                {
+                  "label": "Full Wide",
+                  "value": "full_wide"
+                }
+            ],
+            "default": "full_wide"
+        },
+        {
+            "type": "radio",
+            "id": "hover_style",
+            "label": "Hover Style",
+            "options": [
+                {
+                  "label": "Style 1",
+                  "value": "style_1"
+                },
+                {
+                  "label": "Style 2",
+                  "value": "style_2"
+                }
+            ],
+            "default": "style_1"
+        }
+	],
+    "blocks":[
+        {
+          "type": "img_banner",
+          "name": "Image Banner",
+          "settings": [
+                {
+                    "type": "select",
+                    "id": "ban_col",
+                    "label": "Select Column",
+                    "options": [
+                        {
+                            "label": "1",
+                            "value": "12"
+                        },
+                        {
+                            "label": "2",
+                            "value": "6"
+                        },
+                        {
+                            "label": "3",
+                            "value": "4"
+                        },
+                        {
+                            "label": "4",
+                            "value": "3"
+                        }
+                    ],
+                    "default": "6"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "ban_img",
+                    "label": "Banner Image",
+                    "info": "Recommended size: 572x578px"
+                },
+                {
+                    "type": "textarea",
+                    "id": "title1",
+                    "label": "Title",
+                    "default": "Handbag <br> Men’s Collection",
+                    "info": "Use '<br>' tag for line break"
+                },
+                {
+                    "type": "text",
+                    "id": "btn",
+                    "label": "Button Text",
+                    "default": "Discover Now"
+                },
+                {
+                    "type": "url",
+                    "id": "btn_url",
+                    "label": "Button URL",
+                    "default": "\/"
+                },
+                {
+                    "type": "header",
+                    "content": "Font Size"
+                },
+                {
+                    "type": "range",
+                    "id": "title1_font_size",
+                    "label": "Title",
+                    "min": 1,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 36
+                },
+                {
+                    "type": "range",
+                    "id": "btn_font_size",
+                    "label": "Button",
+                    "min": 1,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 16
+                },
+                {
+                    "type": "header",
+                    "content": "Color"
+                },
+                {
+                    "type": "color",
+                    "id": "title1_color",
+                    "label": "Title Color",
+                    "default": "#fff"
+                },
+                {
+                    "type": "color",
+                    "id": "btn_color",
+                    "label": "Button Color",
+                    "default": "#fff"
+                },
+                {
+                    "type": "color",
+                    "id": "btn_border_color",
+                    "label": "Button Border Color",
+                    "default": "#fff",
+                    "info": "Don't want? Make color 'None'"
+                },
+                {
+                    "type": "color",
+                    "id": "btn_hover_color",
+                    "label": "Button Hover Color",
+                    "default": "#ff6a28"
+                },
+                {
+                    "type": "color",
+                    "id": "btn_hover_border_color",
+                    "label": "Button Hover Border Color",
+                    "default": "#ff6a28"
+                }
+        	]
+        },
+	
+	   {
+          "type": "section_padding",
+          "name": "Section Padding",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 100
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 80
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 60
+			}
+          ]
+       },
+	   {
+          "type": "section_margin",
+          "name": "Section Margin",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			}
+          ]
+       },
+	   {
+          "type": "section_background",
+          "name": "Section Background",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "image_picker",
+			  "id": "section_bg_image",
+			  "label": "BG Image"
+			},
+			{
+			  "type": "color",
+			  "id": "section_bg_color",
+			  "label": "BG Color",
+			  "default": "#ffffff"
+			}
+          ]
+       }
+	],
+	"presets":[
+		{
+			"name": "Text-Img Banner",
+			"category": "2. Banner",
+			"blocks": [
+				{"type": "img_banner"},
+				{"type": "img_banner"}
+			]
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

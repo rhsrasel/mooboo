@@ -1,0 +1,322 @@
+{%- assign sset = section.settings -%}
+
+<div{% unless settings.header_style == 'style_3' %} class="header_middel"{% endunless %} id="section-{{ section.id }}">
+  <div class="container-fluid">    
+    <div class="{% if settings.header_style == 'style_3' %}header_seven_top{% else %}middel_inner{% endif %}">
+      <div class="row align-items-center">
+        {% for block in section.blocks %}{% case block.type %}
+        {% when 'logo' %}{% assign bset = block.settings %}
+        <div class="{% if settings.header_style == 'style_3' %}col-lg-3 col-md-3{% else %}col-lg-2 col-md-2{% endif %}">
+          {% if settings.header_style == 'style_3' %}<div class="header_top_logo_wrapper">{% endif %}
+          <div class="logo">
+            {%- include 'header-logo' -%}
+          </div>          
+          {% if settings.header_style == 'style_3' %}
+          <div class="home_menu_bar">
+            <div class="icone_menu">
+              <a href="#" class="remove_href"><i class="fa fa-bars"></i></a>
+              <div class="home_menu_inner">
+                {%- include 'main-menu-2' -%}
+              </div>
+            </div>
+          </div>{% endif %}
+          {% if settings.header_style == 'style_3' %}</div>{% endif %}</div>{% endcase %}{% endfor %}
+
+        <div class="{% if settings.header_style == 'style_3' %}col-lg-9 col-md-9{% else %}col-lg-10 col-md-10{% endif %}">
+          <div class="{% if settings.header_style == 'style_3' %}header_top_right{% else %}middel_right_info{% endif %}">
+            {% for block in section.blocks %}{% case block.type %}
+            {% when 'search' %}{% assign bset = block.settings %}
+            <div class="search_bar">
+              <form action="/search" method="get" role="search">
+                <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ bset.search_placeholder }}">
+                <button type="submit"><i class="ion-ios-search-strong"></i></button>
+              </form>
+            </div>
+
+            {% when 'usermenu_currency' %}{% assign bset = block.settings %}
+            <div class="top_right{% unless settings.header_style == 'style_3' %} text-right{% endunless %}">
+              <ul>
+                {%- if bset.show_currency -%}{%- include 'currency-picker' -%}{%- endif -%}
+                {% if bset.show_usermenu %}
+                <li class="top_links"><a href="/">{% unless settings.header_style == 'style_3' %}<i class="ion-android-person"></i> {% endunless %}{{ bset.user_menu_title }} <i class="ion-chevron-down"></i></a>
+                  <ul class="dropdown_links">{%- include 'user-menu' -%}</ul></li>{% endif %}
+              </ul>
+            </div>   
+
+            {% when 'mini_cart' %}{% assign bset = block.settings %}
+            <div class="cart_link">
+              {%- include 'mini-cart' -%}
+            </div>{% endcase %}{% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% unless settings.header_style == 'style_3' %}
+    <div class="horizontal_menu horizontal_menu_six">
+      <div class="main_menu"> 
+        {%- include 'main-menu' -%}
+      </div>
+    </div>{% endunless %}
+  </div>
+</div>
+
+{% unless settings.header_style == 'style_3' %}
+<div class="header_bottom sticky-header">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-12">
+        <div class="main_menu_inner">
+          <div class="main_menu d-none d-lg-block"> 
+           {%- include 'main-menu' -%}
+          </div>
+          <div class="mobile-menu mobile_six d-lg-none">
+            {%- include 'mobile-menu' -%}  
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>{% endunless %}
+
+
+
+
+{%- style -%}
+  .header_six .top_right>ul>li::before{display: none;}
+  #section-{{ section.id }} .main_menu nav>ul>li>a, #section-{{ section.id }} .icone_menu>a i,
+  #section-{{ section.id }} .home_menu_inner nav>ul>li ul li a, #section-{{ section.id }} .home_menu_inner nav>ul>li>a {
+    color: {{ sset.menu_color }} !important;
+  }
+  #section-{{ section.id }} .main_menu nav ul li ul li a:hover, #section-{{ section.id }} .main_menu nav ul li ul li.active a, 
+  #section-{{ section.id }} .main_menu nav>ul>li.active>a, #section-{{ section.id }} .main_menu nav>ul>li:hover>a,
+  #section-{{ section.id }} .main_menu nav>ul>li>ul.mega_menu li ul li a:hover, #section-{{ section.id }} .icone_menu>a:hover i,
+  #section-{{ section.id }} .home_menu_inner nav>ul>li:hover>a, #section-{{ section.id }} .icone_menu>a:not([href]):not([tabindex]) i:hover,
+  #section-{{ section.id }} .home_menu_inner nav>ul>li ul li a:hover, .main_menu nav ul li ul li a:hover, 
+  .main_menu nav ul li ul li.active a, .main_menu nav>ul>li.active>a, .main_menu nav>ul>li:hover>a {
+  	color: {{ sset.main_menu_hover_color }} !important;
+  }
+
+  {%- for block in section.blocks -%}{%- case block.type -%}
+  {%- when 'search' -%}{%- assign bset = block.settings -%}
+  #section-{{ section.id }} .search_bar form input {    
+    color: {{ bset.input_text_color }};
+  }
+  #section-{{ section.id }} .search_bar form input[type="search"]::-moz-placeholder {
+    color: {{ bset.input_text_color }} !important;
+  }
+  #section-{{ section.id }} .search_bar form input[type="search"]::-webkit-input-placeholder {
+    color: {{ bset.input_text_color }} !important;
+  }
+  #section-{{ section.id }} .search_bar form input[type="search"]::-ms-input-placeholder {
+    color: {{ bset.input_text_color }} !important;
+  }
+  #section-{{ section.id }} .search_bar form button {
+    color: {{ bset.icon_color }};
+  }  
+  #section-{{ section.id }} .search_bar form button:hover {
+    color: {{ bset.icon_hover_color }};
+  }  
+  {%- when 'mini_cart' -%}{%- assign bset = block.settings -%}
+  .cart_link > a {
+    color: {{ bset.content_color }} !important;
+    border: 1px solid {{ bset.border_color }};
+    border-radius: {{ bset.border_radius }}px;
+  }
+  .cart_link > a i, .middel_right_info .search_bar form button:hover {
+    color: {{ bset.content_color }};
+  }
+{%- endcase -%}{%- endfor -%}
+{%- endstyle -%}
+
+
+
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+		{
+			"type": "header",
+            "content": "Main Menu"
+        },
+		{
+			"type": "color",
+			"id": "menu_color",
+			"label": "Menu Text Color",
+			"default": "#242424"
+		},
+		{
+			"type": "color",
+			"id": "main_menu_hover_color",
+			"label": "Menu Hover Text Color",
+			"default": "#ff6a28"
+		}
+	],
+    "blocks": [
+		{
+			"type": "logo",
+			"name": "Logo",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "paragraph",
+					"content": "Upload logo from Theme settings > General Settings"
+				}
+			]			
+		},
+		{
+			"type": "search",
+			"name": "Search Box",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "text",
+					"id": "search_placeholder",
+					"label": "Placeholder Text",
+					"default": "Search entire store here..."
+				},
+                {
+                    "type": "color",
+                    "id": "input_text_color",
+                    "label": "Placeholder & Input Text Color",
+                    "default": "#a4a4a4"
+                },
+                {
+                    "type": "color",
+                    "id": "icon_color",
+                    "label": "Icon Color",
+                    "default": "#747474"
+                },
+                {
+                    "type": "color",
+                    "id": "icon_hover_color",
+                    "label": "Icon Hover Color",
+                    "default": "#ff6a28"
+                }
+			]			
+		},
+		{
+			"type": "usermenu_currency",
+			"name": "User Menu and Currency",
+			"limit": 1,
+			"settings": [
+                {
+                    "type": "header",
+                    "content": "User Menu"
+                },
+				{
+					"type": "checkbox",
+					"id": "show_usermenu",
+					"label": "Show User Menu",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "user_menu_title",
+					"label": "User Menu Title",
+					"default": "My Account"
+				},
+                {
+                    "type": "link_list",
+                    "id": "user_menu_handle",
+                    "label": "Select User Menu"
+                },
+                {
+                  "type": "paragraph",
+                  "content": "Details- Theme settings > Login-Register"
+                },
+                {
+                    "type": "header",
+                    "content": "Currency"
+                },
+				{
+					"type": "checkbox",
+					"id": "show_currency",
+					"label": "Show Currency",
+					"default": true
+				},
+                {
+                  "type": "paragraph",
+                  "content": "Details- Theme settings > Currency"
+                }
+			]
+		},
+		{
+			"type": "mini_cart",
+			"name": "Mini Cart",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "text",
+					"id": "cart_item_title",
+					"label": "Item Title",
+					"default": "Item(s)"
+				},
+				{
+					"type": "text",
+					"id": "cart_total_title",
+					"label": "Total Title",
+					"default": "Total: "
+				},
+				{
+					"type": "text",
+					"id": "view_cart_title",
+					"label": "View Cart",
+					"default": "View Cart"
+				},
+				{
+					"type": "text",
+					"id": "checkout_title",
+					"label": "Checkout",
+					"default": "Checkout"
+				},
+				{
+					"type": "text",
+					"id": "empty_cart_title",
+					"label": "Empty Cart",
+					"default": "Your cart is currently empty."
+				},
+				{
+					"type": "text",
+					"id": "continue_shopping_title",
+					"label": "Continue Shopping",
+					"default": "Continue shopping"
+				},
+                {
+                    "type": "header",
+                    "content": "Color"
+                },
+                {
+                    "type": "color",
+                    "id": "content_color",
+                    "label": "Content Color",
+                    "default": "#747474"
+                },
+                {
+                    "type": "color",
+                    "id": "border_color",
+                    "label": "Border Color",
+                    "default": "#ddd"
+                },
+				{
+					"type": "range",
+					"id": "border_radius",
+					"label": "Border Radius",
+					"max": 50,
+					"min": 0,
+					"step": 1,
+					"default": 30,
+                    "unit": "px"
+				}
+			]			
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

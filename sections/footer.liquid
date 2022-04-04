@@ -1,0 +1,25 @@
+<div class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="copyright text-center">
+          {{ section.settings.copy_ritht_text }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "settings": [
+		{
+          "type": "richtext",
+          "id": "copy_ritht_text",
+          "label": "CopyRight Text",
+		  "default": "<p>Copyright © 99 Shopify All Right Reserved.</p>"
+		}
+    ]
+  }
+{% endschema %}

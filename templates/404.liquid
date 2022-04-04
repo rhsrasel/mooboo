@@ -1,0 +1,30 @@
+<div class="error_section moo_section_margin">
+  <div class="container">   
+    <div class="row">
+      <div class="col-12">
+        <div class="error_form">
+          {% if settings.heading_404 !='' %}
+          <h1>{{ settings.heading_404 }}</h1>
+          {% endif %}
+          
+          {% if settings.heading2_404 !='' %}
+          <h2>{{ settings.heading2_404 }}</h2>
+          {% endif %}
+
+          {% if settings.sub_text_404 !='' %}
+          <p>{{ settings.sub_text_404 }}</p>
+          {% endif %}
+
+          <form action="/search" method="get" role="search">
+            <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ settings.search_placeholder }}">
+            <button type="submit"><i class="ion-ios-search-strong"></i></button>
+          </form>
+
+          {% if settings.button_title !='' %}
+          <a href="{{ settings.button_url }}">{{ settings.button_title }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>    
+</div>

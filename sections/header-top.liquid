@@ -1,0 +1,220 @@
+{%- assign sset = section.settings -%}{%- if sset.show_header_top -%}
+
+<div class="header_top{% if sset.header_top == 'full_wide' %} plr-50{% endif %}" id="section-{{ section.id }}">
+  <div class="container{% if sset.header_top == 'full_wide' %}-fluid{% endif %}">   
+    <div class="row align-items-center">
+      <div class="col-lg-7 col-md-12">
+        {% for block in section.blocks %}{% case block.type %}
+        {% when 'custom_text' %}{% assign bset = block.settings %}
+        <div class="welcome_text">
+          <ul>
+            {% if bset.show_content1 %}
+            <li style="color: {{ sset.content_color | color_modify: 'alpha', 0.6 }}">
+              {% if bset.title1 != '' %}<span style="color: {{ sset.content_color }}">{{ bset.title1 }} </span>{% endif %}{{ bset.text1 }}
+            </li>{% endif %}
+
+            {% if bset.show_content2 %}
+            <li style="color: {{ sset.content_color | color_modify: 'alpha', 0.6 }}">
+              {% if bset.title2 != '' %}<span style="color: {{ sset.content_color }}">{{ bset.title2 }} </span>{% endif %}{{ bset.text2 }}
+            </li>{% endif %}
+          </ul>
+        </div>{% endcase %}{% endfor %}
+      </div>
+
+      <div class="col-lg-5 col-md-12">
+        {% for block in section.blocks %}{% case block.type %}
+        {% when 'usermenu_currency' %}{% assign bset = block.settings %}
+        <div class="top_right text-{% if settings.rtl_enable %}left{% else %}right{% endif %}">
+          <ul>
+            {% if bset.show_usermenu %}
+            <li class="top_links"><a href="/">{{ bset.user_menu_title }} <i class="ion-chevron-down"></i></a><ul class="dropdown_links">{%- include 'user-menu' -%}</ul></li>{% endif %}
+            {%- if bset.show_currency -%}{%- include 'currency-picker' -%}{%- endif -%}
+          </ul>
+        </div>{% endcase %}{% endfor %}   
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{%- style -%}
+  #section-{{ section.id }} .welcome_text ul li span, #section-{{ section.id }} .top_right > ul > li > a:not([href]):not([tabindex]), 
+  #section-{{ section.id }} .top_right > ul > li > a {
+	color: {{ sset.content_color }};
+  }
+  #section-{{ section.id }}{
+    {% if sset.show_border_btm %}border-bottom: 1px solid {{ sset.content_color | color_modify: 'alpha', 0.1 }};{% endif %}
+    {%- for block in section.blocks -%}{%- case block.type -%}
+    {%- when 'section_background' -%}{%- assign bset = block.settings -%}
+    background: {{ bset.section_bg_color }} 
+    {%- if bset.section_bg_image -%}url("{{ bset.section_bg_image | img_url: 'master' }}"){%- endif -%} no-repeat scroll center center / cover;
+    {%- endcase -%}{%- endfor -%}
+  }
+{%- endstyle -%}{%- endif -%}
+
+
+
+{% schema %}
+  {
+    "name": "Header Top",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "show_header_top",
+            "label": "Show Header Top",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_border_btm",
+            "label": "Show Border Bottom",
+            "default": false
+        },
+		{
+			"type": "radio",
+			"id": "header_top",
+			"label": "Header Top Width",
+			"options": [
+				{
+					"label": "Default",
+					"value": "default"
+				},
+				{
+					"label": "Full Width",
+					"value": "full_wide"
+				}
+			],
+			"default": "default"
+		},
+		{
+			"type": "color",
+			"id": "content_color",
+			"label": "Header Top Content Color",
+			"default": "#fff"
+		}
+	],
+	"blocks": [
+		{
+			"type": "custom_text",
+			"name": "Custom text",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "header",
+					"content": "Custom Text 1"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_content1",
+					"label": "Show Custom Text 1",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "title1",
+					"label": "Title 1",
+					"default": "Free Delivery: "
+				},
+				{
+					"type": "text",
+					"id": "text1",
+					"label": "Text 1",
+					"default": "Take advantage of our time to save event"
+				},
+				{
+					"type": "header",
+					"content": "Custom Text 2"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_content2",
+					"label": "Show Custom Text 2",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "title2",
+					"label": "Title 2",
+					"default": " Free Returns*"
+				},
+				{
+					"type": "text",
+					"id": "text2",
+					"label": "Text 2",
+					"default": "Satisfaction guaranteed"
+				}
+			]
+		},
+		{
+			"type": "usermenu_currency",
+			"name": "User Menu and Currency",
+			"limit": 1,
+			"settings": [
+                {
+                    "type": "header",
+                    "content": "User Menu"
+                },
+				{
+					"type": "checkbox",
+					"id": "show_usermenu",
+					"label": "Show User Menu",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "user_menu_title",
+					"label": "User Menu Title",
+					"default": "My Account"
+				},
+                {
+                    "type": "link_list",
+                    "id": "user_menu_handle",
+                    "label": "Select User Menu"
+                },
+                {
+                  "type": "paragraph",
+                  "content": "Details- Theme settings > Login-Register"
+                },
+                {
+                    "type": "header",
+                    "content": "Currency"
+                },
+				{
+					"type": "checkbox",
+					"id": "show_currency",
+					"label": "Show Currency",
+					"default": true
+				},
+                {
+                  "type": "paragraph",
+                  "content": "Details- Theme settings > Currency"
+                }
+			]
+		},
+        {
+        "type": "section_background",
+        "name": "Section Background",
+        "limit": 1,
+        "settings": [
+                {
+                  "type": "image_picker",
+                  "id": "section_bg_image",
+                  "label": "BG Image"
+                },
+                {
+                  "type": "color",
+                  "id": "section_bg_color",
+                  "label": "BG Color",
+                  "default": "#242424"
+                }
+            ]
+        }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

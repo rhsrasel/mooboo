@@ -1,0 +1,121 @@
+{%- assign on_sale = false -%}{%- if product.compare_at_price > product.price -%}{%- assign on_sale = true -%}{%- endif -%}
+{%- assign sold_out = true -%}{%- if product.available -%}{%- assign sold_out = false -%}{%- endif -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- if product.available -%}{%- assign func = "Shopify.addItem(" | append: variant.id | append: ", 1)" -%}{%- endif -%} 
+
+<div class="single_product {{ variant.id }}">
+  <div class="product_thumb">
+    {% if product.description contains '[countdown]' %}
+    {% assign count_down_first = product.description | split:'[/countdown]' | first %}
+    {% assign count_down_final = count_down_first | split:'[countdown]' | last %}
+    <div class="p_grid_countdown position-absolute" data-countdown="{{ count_down_final }}"></div> 
+    {% endif %}
+
+    {%- if product.images.size > 1 -%}
+    <a class="primary_img" href="{{ product.url | within: collection }}"><img class="popup_cart_image" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"></a>
+    {%- for image in product.images limit: 1 offset: 1 -%}
+    <a class="secondary_img" href="{{ product.url | within: collection }}"><img src="{{ image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"></a>{%- endfor -%}
+    {%- else -%}
+    <a class="primary_img" href="{{ product.url | within: collection }}"><img class="popup_cart_image" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"></a>
+    {%- endif -%}
+    <div class="product_action">
+      <div class="hover_action">
+        <a class="remove_href" href="#"><i class="fa fa-plus"></i></a>
+        <div class="action_button moo_product_action">
+          <ul>
+            {% unless product.description contains '[affiliate_link]' %}
+            <li class="product-cart-action">
+              {% if product.available %}
+              {% if settings.product_cart_type == 'ajax_spin_cart' %}
+              <a title="{{ settings.cart_button_title }}" href="javascript:void(0);" onclick="{{ func }}; return false;" class="ajax-spin-cart">
+                <span>
+                  <span class="cart-title"><i class="fa fa-shopping-basket"></i></span>
+                  <span class="cart-loading"><i class="fa fa-spinner fa-spin"></i></span>
+                  <span class="cart-added"><i class="fa fa-check"></i></span>
+                  <span class="cart-unavailable"><i class="fa fa-question-circle-o"></i></span>
+                </span>
+              </a>
+              {% elsif settings.product_cart_type == 'ajax_popup_cart' %}
+              <a href="javascript:void(0);" onclick="{{ func }}; return false;" class=""><i class="fa fa-shopping-basket"></i></a>
+              {% elsif settings.product_cart_type == 'without_ajax_cart' %}
+              <form action="/cart/add" method="post" enctype="multipart/form-data">
+                <select name="id" style="display:none;">
+                  {% for variant in product.variants %}
+                  <option value="{{ variant.id }}">{{ variant.title | escape }} - {{ variant.price | money }}</option>
+                  {% endfor %}
+                </select>
+                <button type="submit">
+                  <a href="#" title="{{ settings.cart_button_title }}"><i class="fa fa-shopping-basket"></i></a>
+                </button>
+              </form>
+              {% endif %}
+              {% else %}
+              <button class="cart-disable">
+                <a href="#" title="{{ settings.soldout_button_title }}"><i class="fa fa-shopping-basket"></i></a>
+              </button>
+              {% endif %}
+            </li>{% endunless %}
+
+            {% if customer and settings.wishlist_enable %}
+            <li><a class="action-wishlist tile-actions--btn flex wishlist-btn wishlist wish_action" href="#" data-product-handle="{{ product.handle }}">
+              <i class="fa fa-heart-o add_wish"></i>
+              <i class="fa fa-circle-o-notch fa-spin wish_wait"></i>
+              <i class="fa fa-check added_wish"></i>
+              </a></li>
+            {% elsif settings.wishlist_enable %}
+            <li><a class="wishlist" href="/account/login"><i class="fa fa-heart-o"></i></a></li>
+            {% endif %}
+
+            {% if settings.show_compare %}
+            <li class="d-none d-xl-block d-lg-block d-md-block"><a href="#" class="compare" data-pid="{{ product.handle  }}" title="Add to Compare" data-original-title="Compare"><i class="fa fa-sliders"></i></a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    {% unless product.description contains '[affiliate_link]' %}
+    {%- if settings.product_quickview_enalbe -%}
+    <div class="quick_button">
+      <a class="action-plus" title="Quick View" data-toggle="modal" data-target="#quickViewModal" href="javascript:void(0);" 
+         onclick="quiqview('{{ product.handle | handleize }}')">+ quick view</a>
+    </div>{%- endif -%}{% endunless %}
+
+    {%- include 'product-badge' -%}
+  </div>
+  <div class="product_content grid_content">
+    <h3 class="popup_cart_title add_class"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></h3>
+    <span class="current_price">{{ product.variants.first.price | money }}</span>
+    {% if product.variants.first.compare_at_price > product.variants.first.price %}
+    <span class="old_price">{{ product.variants.first.compare_at_price | money }}</span>
+    {% endif %}
+  </div>
+
+  <div class="product_content list_content">
+    <h3 class="add_class_list"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></h3>
+    {%- if settings.show_product_review -%}
+    <div class="product_ratting spr-badge-caption-none">
+      <ul>
+        <li><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></li>
+      </ul>
+    </div>
+    {%- endif -%}
+
+    <div class="product_price">    
+      <span class="current_price">{{ product.variants.first.price | money }}</span>
+      {% if product.variants.first.compare_at_price > product.variants.first.price %}
+      <span class="old_price">{{ product.variants.first.compare_at_price | money }}</span>
+      {% endif %}
+    </div>
+    <div class="product_desc">
+      {%- if product.description contains '[short_description]' -%}            
+      {%- assign short_description_first = product.description | split:'[/short_description]' | first -%}
+      {%- assign short_description_final = short_description_first | split:'[short_description]' | last -%}
+      {{ short_description_final }}{%- else -%}
+      <p>
+        {{ product.description | strip_html | truncatewords: 40, "" | split: '[countdown]' | first | split: '[affiliate_link]' | first | split: '[product_video]' | first | split: '[short_description]' | first | split: '[product_description]' | first | split: '[more_info]' | first }}
+      </p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

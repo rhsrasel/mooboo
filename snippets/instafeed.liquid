@@ -1,0 +1,79 @@
+<section class="instagram_area{% if sset.section_width == 'full_wide' %} instagram_seven{% endif %}">
+  <div class="container{% if sset.section_width == 'full_wide' or sset.section_width == 'wide' %}-fluid{% endif %}">
+    {%- if sset.section_title != '' or sset.section_subtitle != '' -%}
+    <div class="row">
+      <div class="col-12">
+        <div class="section_title">
+          {%- if sset.section_title != '' -%}
+          <h2 style="color:{{ sset.section_title_color }};">{{ sset.section_title }}</h2>{%- endif -%}
+
+          {%- if sset.section_subtitle != '' -%}
+          <p style="color:{{ sset.section_subtitle_color }};">{{ sset.section_subtitle }}</p>{%- endif -%}
+        </div>
+      </div>
+    </div>{%- endif -%}
+
+    <div class="instagram_home_block">
+      <div class="row">
+        <div id="instafeed" class="owl-carousel instagram_wrapper instagram_column5"></div>
+        {%- if sset.insta_text != '' -%}
+        <div class="col-12">
+          <div class="text_follow">
+            <a href="{{ sset.insta_url }}">{{ sset.insta_text }}</a>
+          </div>
+        </div>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+  (function ($) {
+    "use strict";
+    jQuery(document).ready(function(){
+      var userFeed = new Instafeed({
+       get: 'user',
+        userId: '{{ sset.instafeed_user_id }}',
+        limit: '{{ sset.instafeed_limit }}',
+        accessToken: '{{ sset.instafeed_access_token }}',
+        resolution: '{{ sset.image_resolution }}',
+        template: '<div class="col-lg-3"><div class="single_instagram"><a href="\{\{link\}\}"><img src="\{\{image\}\}"></a><div class="instagram_icone"><a class="instagram_pupop" href="\{\{link\}\}"><i class="fa fa-instagram"></i></a></div></div></div>',
+        after: function(){      
+      	    $('.instagram_column5').owlCarousel({
+              {% if settings.rtl_enable %}
+              rtl: true,
+              {% endif %}
+              loop: true,
+              nav: true,
+              autoplay:{% if sset.slider_autoplay %} true{% else %} false{% endif %},
+              autoplayTimeout: 8000,
+              items: 5,
+              dots:false,
+              navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+              responsiveClass:true,
+              responsive:{
+              0:{
+              items:1,
+              },
+              500:{
+              items:2,
+              },
+              768:{
+              items:3,
+              },
+              992:{
+              items:4,
+              },
+              1200:{
+              items:5,
+              }
+              }
+           })
+      	}
+      });
+      userFeed.run();
+    });
+  })(jQuery); 
+</script>
+<script src="{{ 'instafeed.min.js' | asset_url }}"></script>

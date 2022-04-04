@@ -1,0 +1,143 @@
+{%- assign sset = section.settings -%}
+
+<div class="header_bottom sticky-header headerbtm_1_2{% if sset.bg_style == 'full_width' %} hb_section_bg{% endif %}" id="section-{{ section.id }}">
+  <div class="container">{%- if sset.bg_style == 'default' -%}
+    <div class="hb_section_bg pad_lr_20">{%- endif -%}
+      <div class="row align-items-center">                   
+        <div class="col-12">
+          <div class="header_static">
+            <div class="main_menu_inner{% if sset.center_menu %} text-center{% endif %}">
+              <div class="main_menu d-none d-lg-block"> 
+                {%- include 'main-menu' -%}
+              </div>
+              <div class="mobile-menu d-lg-none">
+                {%- include 'mobile-menu' -%}     
+              </div>
+            </div> 
+
+            {%- if sset.custom_text != '' -%}
+            <div class="contact_phone">
+              <p style="color: {{ sset.custom_text_color }}">{{ sset.custom_text }}</p>
+            </div>{%- endif -%}
+          </div>    
+        </div>
+      </div>{%- if sset.bg_style == 'box' -%}      
+    </div>{%- endif -%}
+  </div>
+</div>
+
+
+
+
+
+{%- style -%}
+  .main_menu nav>ul>li>a {
+    color: {{ sset.menu_color }};
+  }
+  .main_menu nav ul li ul li a:hover, .main_menu nav ul li ul li.active a, .main_menu nav>ul>li.active>a, .main_menu nav>ul>li:hover>a,
+  .main_menu nav>ul>li>ul.mega_menu li ul li a:hover, .main_menu nav ul li ul li a:hover, .main_menu nav ul li ul li.active a, .main_menu nav>ul>li.active>a, 
+  .main_menu nav>ul>li:hover>a {
+  	color: {{ sset.main_menu_hover_color }};
+  }
+  .hb_section_bg { background: {{ sset.section_bg_color }};}
+  .header_bottom.sticky .hb_section_bg { background: transparent;}
+  .header_bottom.sticky { background: {{ sset.section_bg_color | color_modify: 'alpha', 0.7 }};}
+  .pad_lr_20 {
+    padding-left: {{ sset.section_padleftright }}px;
+    padding-right: {{ sset.section_padleftright }}px;
+  }
+{%- endstyle -%}
+
+
+
+
+{% schema %}
+  {
+    "name": "Header Bottom",
+    "settings": [
+		{
+			"type": "header",
+            "content": "Custom text"
+        },
+		{
+            "type": "textarea",
+            "id": "custom_text",
+            "label": "Text",
+            "default": "Call Free Support: (+012) 800 456 789",
+            "info": "Don't want? Keep blank."
+        },
+		{
+            "type": "color",
+            "id": "custom_text_color",
+            "label": "Text Color",
+            "default": "#747474"
+        },
+		{
+			"type": "header",
+            "content": "Main Menu"
+        },
+		{
+			"type": "checkbox",
+			"id": "center_menu",
+			"label": "Enable Centered Menu",
+			"default": false
+		},
+		{
+			"type": "color",
+			"id": "menu_color",
+			"label": "Menu Text Color",
+			"default": "#242424"
+		},
+		{
+			"type": "color",
+			"id": "main_menu_hover_color",
+			"label": "Menu Hover Text Color",
+			"default": "#ff6a28"
+		},
+        {
+            "type": "range",
+            "id": "section_padleftright",
+            "label": "Menu Padding Left Right",
+            "max": 50,
+            "min": 0,
+            "step": 1,
+            "unit": "px",
+            "default": 0,
+            "info": "It will work for BG Style = Default"
+        },
+		{
+			"type": "header",
+            "content": "Section Background"
+        },
+		{
+			"type": "radio",
+			"id": "bg_style",
+			"label": "BG Style",
+			"options": [
+				{
+					"label": "Default",
+					"value": "default"
+				},
+				{
+					"label": "Full Width",
+					"value": "full_width"
+				}
+			],
+			"default": "full_width"
+		},
+        {
+            "type": "color",
+            "id": "section_bg_color",
+            "label": "BG Color",
+            "default": "#ffffff"
+        }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+

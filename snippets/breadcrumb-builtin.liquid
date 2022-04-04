@@ -1,0 +1,46 @@
+{% unless template == 'index' %}
+<nav role="navigation" aria-label="breadcrumbs">
+  <ul class="breadcrumb-list">
+    <li>
+      <a href="/" title="{{ settings.home_title }}">{{ settings.home_title }}</a>
+    </li>
+    <li class="moo_separator">/</li>
+    <li>
+      {% if template contains 'product' %}
+          {% if collection %}
+              {% if collection.handle %}
+              {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+              {{ collection.title | link_to: url }} <span class="bc-separator moo_separator"> / </span> 
+              {% endif %}
+          {% endif %}
+          <a class="remove_href cursor_text active">{{ product.title }}</a>
+      
+      {% elsif template contains 'collection' and collection.handle %}
+          {% if current_tags %}
+              {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+              {{ collection.title | link_to: url }}
+              <span> <span class="bc-separator moo_separator"> / </span> {{ current_tags | join: " + " }}</span>
+          {% else %}
+      		  <a class="remove_href cursor_text active">{{ collection.title }}</a>
+          {% endif %}
+
+      {% elsif template == 'blog' %}
+          {% if current_tags %}
+              {{ blog.title | link_to: blog.url }}
+              <span> <span class="bc-separator moo_separator"> / </span> {{ current_tags | join: " + " }}</span>
+          {% else %}
+      		  <a class="remove_href cursor_text active">{{ blog.title }}</a>
+          {% endif %}
+
+      {% elsif template == 'article' %}
+          {{ blog.title | link_to: blog.url }}
+          <span> <span class="bc-separator moo_separator"> / </span> {{ article.title }}</span>
+      {% elsif template contains 'page' %}
+      	  <a class="remove_href cursor_text active">{{ page.title }}</a>
+      {% else %}
+      	  <a class="remove_href cursor_text active">{{ page_title }}</a>
+      {% endif %}
+    </li>
+  </ul>
+</nav>
+{% endunless %}

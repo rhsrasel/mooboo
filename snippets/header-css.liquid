@@ -1,0 +1,8 @@
+{{ 'theme-minified.css' | asset_url | stylesheet_tag }}
+{{ 'theme-custom.css' | asset_url | stylesheet_tag }}
+{% if settings.rtl_enable %}{{ 'theme-rtl.css' | asset_url | stylesheet_tag }}{% endif %}
+{{ 'theme-responsive.css' | asset_url | stylesheet_tag }}
+{% if settings.rtl_enable %}{{ 'theme-responsive-rtl.css' | asset_url | stylesheet_tag }}{% endif %}
+{{ 'skin-theme.css' | asset_url | stylesheet_tag }}
+
+{%- if settings.custom_css != '' -%}{{ settings.custom_css }}{%- endif -%}

@@ -1,0 +1,501 @@
+{%- assign sset = section.settings -%}
+{%- assign header_font = sset.header_font -%}
+{%- assign paragraph_font = sset.paragraph_font -%}
+
+{%- if sset.slider_style == 'style_1' -%}
+<div class="slider_section slider_section_six" id="{{ sset.section_id }}">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-{% if sset.show_banner %}8{% else %}12{% endif %}">
+        <div class="slider_area home_six_slider owl-carousel">
+          {%- include 'slider-snippet-2' -%}
+        </div>
+      </div>      
+      {%- if sset.show_banner -%}{% include 'slider-banner' %}{%- endif -%}
+    </div>
+  </div>
+</div>
+{%- else -%}
+<div class="slider_area home_seven_slider owl-carousel" id="{{ sset.section_id }}">
+  {%- include 'slider-snippet-2' -%}
+</div>{%- endif -%}
+
+
+{% style %}
+  {{ header_font | font_face }}
+  {{ paragraph_font | font_face }}  
+
+  .slider_area .slider_content h1, .slider_area .slider_content h2 {
+    font-family: {{ header_font.family }}, {{ header_font.fallback_families }};
+    font-weight: {{ header_font.weight }};
+    font-style: {{ header_font.style }};
+    line-height: 1;
+  }
+  .slider_area .slider_content p {
+    font-family: {{ header_font.family }}, {{ header_font.fallback_families }};
+  }
+  .slider_area .slider_content a {
+    color: {{ sset.btn_color }};
+    border-color: {{ sset.btn_border_color }};
+    font-family: {{ paragraph_font.family }}, {{ header_font.fallback_families }};
+    font-weight: {{ paragraph_font.weight }};
+    font-style: {{ paragraph_font.style }};
+    font-size: {{ sset.btn_font_size }}px;
+  }  
+  .slider_area .slider_content a:hover {
+    color: {{ sset.btn_hover_color }};
+    border-color: {{ sset.btn_hover_border_color }};
+  }
+  .slider_area.owl-carousel .owl-nav div {
+  	color: {{ sset.nav_color }};
+  }
+  .slider_area.owl-carousel .owl-nav div:hover {
+  	color: {{ sset.nav_hover_color }};
+  }
+  {% if sset.show_controlnav %}
+  .slider_area.owl-carousel .owl-dots .owl-dot {
+    background: {{ sset.controlnav_color }};
+  }
+  .slider_area.owl-carousel .owl-dots .owl-dot.active {
+    background: {{ sset.active_controlnav_color }};
+  }
+  {% else %}
+  .slider_area.owl-carousel .owl-dots .owl-dot {
+    display: none;
+  }{% endif %}
+
+{%- include 'section-settings' -%}
+{% endstyle %}
+
+
+
+<script>
+  $('.slider_area').owlCarousel({
+    {% if settings.rtl_enable %}
+    rtl: true,
+    {% endif %}
+    navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+    animateOut: 'fadeOut',
+    autoplay: true,
+    loop: true,
+    nav: true,
+    autoplay: {% if sset.slider_autoplay %}true{% else %}false{% endif %},
+    autoplayTimeout: 5000,
+    items: 1,
+    dots:true
+  });
+</script>
+
+
+
+{% schema %}
+  {
+    "name": "Slider with Banner",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_id",
+            "label": "Section ID",
+            "default": "slider-banner"
+        },
+        {
+          "type": "checkbox",
+          "id": "slider_autoplay",
+          "label": "Enable Slider Autoplay",
+          "default": false
+        },
+        {
+          "type": "radio",
+          "id": "slider_style",
+          "label": "Slider Style",
+          "options": [
+            {"label": "Style 1", "value": "style_1"},
+            {"label": "Style 2", "value": "style_2"}
+          ],
+          "default": "style_1",
+          "info": "Banner doesn't work for Style 2"
+        },
+        {
+          "type": "header",
+          "content": "Font Family"
+        },
+		{
+          "type": "font_picker",
+          "id": "header_font",
+          "label": "Title & Description",
+          "default": "libre_franklin_n4"
+        },
+		{
+          "type": "font_picker",
+          "id": "paragraph_font",
+          "label": "Button",
+          "default": "libre_franklin_n4"
+        },        
+		{
+          "type": "header",
+          "content": "Font Size"
+        },
+        {
+          "type": "range",
+          "id": "title1_font_size",
+          "label": "Title 1",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "title2_font_size",
+          "label": "Title 2",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "px",
+          "default": 80
+        },
+        {
+          "type": "range",
+          "id": "description_font_size",
+          "label": "Description",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "btn_font_size",
+          "label": "Button",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "header",
+          "content": "Color"
+        },
+        {
+          "type": "color",
+          "id": "title1_color",
+          "label": "Title 1",
+          "default": "#232323"
+        }, 
+        {
+          "type": "color",
+          "id": "title2_color",
+          "label": "Title 2",
+          "default": "#232323"
+        }, 
+        {
+          "type": "color",
+          "id": "description_color",
+          "label": "Description",
+          "default": "#232323"
+        },
+        {
+          "type": "color",
+          "id": "btn_color",
+          "label": "Button Text",
+          "default": "#232323"
+        },
+        {
+          "type": "color",
+          "id": "btn_border_color",
+          "label": "Button Border",
+          "default": "#242424"
+        },
+        {
+          "type": "color",
+          "id": "btn_hover_color",
+          "label": "Button Hover",
+          "default": "#ff6a28"
+        },
+        {
+          "type": "color",
+          "id": "btn_hover_border_color",
+          "label": "Button Hover Border",
+          "default": "#ff6a28"
+        },
+        {
+          "type": "header",
+          "content": "Navigation & Control Nav"
+        },
+        {
+          "type": "color",
+          "id": "nav_color",
+          "label": "Navigation Color",
+          "default": "#5f5f5f"
+        },
+        {
+          "type": "color",
+          "id": "nav_hover_color",
+          "label": "Navigation Hover Color",
+          "default": "#fff"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_controlnav",
+          "label": "Show Control Nav",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "controlnav_color",
+          "label": "Color",
+          "default": "#ddd"
+        },
+        {
+          "type": "color",
+          "id": "active_controlnav_color",
+          "label": "Active Color",
+          "default": "#ff6a28"
+        },
+        {
+          "type": "header",
+          "content": "Banner"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_banner",
+          "label": "Show Banner",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "ban_t1_font_size",
+          "label": "Banner Title 1 Font Size",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "px",
+          "default": 28
+        },
+        {
+          "type": "range",
+          "id": "ban_t2_font_size",
+          "label": "Banner Title 2 Font Size",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "ban_t1_color",
+          "label": "Banner Title 1 Color",
+          "default": "#242424"
+        },
+        {
+          "type": "color",
+          "id": "ban_t2_color",
+          "label": "Banner Title 2 Color",
+          "default": "#242424"
+        }
+	],
+    "blocks": [
+		{
+			"type": "slide",
+			"name": "Slide",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "bg_img",
+					"label": "BG Image"
+				},
+				{
+					"type": "header",
+					"content": "Content"
+				},
+				{
+					"type": "text",
+					"id": "title1",
+					"label": "Title 1",
+					"default": "Top Trending"
+				},
+				{
+					"type": "text",
+					"id": "title2",
+					"label": "Title 2",
+					"default": "HANDBAG"
+				},
+				{
+					"type": "textarea",
+					"id": "description",
+					"label": "Description",
+					"default": "Lorem ipsum dolor amet, consectetur adipisicing <br> elit. Vel similique perspiciatis, tempore unde"
+				},
+				{
+					"type": "text",
+					"id": "btn",
+					"label": "Button",
+					"default": "Discover Now"
+				},
+				{
+					"type": "url",
+					"id": "btn_url",
+					"label": "Button URL",
+					"default": "\/collections\/all"
+				}
+			]			
+		},
+		{
+			"type": "banner",
+			"name": "Banner",
+			"settings": [
+				{
+					"type": "radio",
+					"id": "ban_col",
+					"label": "Banner Column",
+					"options": [
+						{
+							"label": "1",
+							"value": "12"
+						},
+						{
+							"label": "2",
+							"value": "6"
+						}
+					],
+					"default": "12"
+				},
+				{
+					"type": "image_picker",
+					"id": "ban_img",
+					"label": "Banner Image"
+				},
+				{
+					"type": "header",
+					"content": "Content"
+				},
+                {
+                  "type": "checkbox",
+                  "id": "show_content",
+                  "label": "Show Content",
+                  "default": true
+                },
+				{
+					"type": "text",
+					"id": "title1",
+					"label": "Title 1",
+					"default": "Clothing No.18"
+				},
+				{
+					"type": "text",
+					"id": "title2",
+					"label": "Title 2",
+					"default": "Sale Off 20% All Store"
+				},
+				{
+					"type": "url",
+					"id": "ban_url",
+					"label": "Banner URL",
+					"default": "\/collections\/all"
+				}
+			]			
+		},
+	   {
+          "type": "section_margin",
+          "name": "Section Margin",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			}
+          ]
+       }
+	],
+	"presets":[
+		{
+			"name": "Slider with Banner",
+			"category": "1. Slider",
+			"blocks":[
+				{"type": "slide"},
+				{"type": "slide"},
+				{"type": "banner"},
+				{"type": "banner"}
+			]
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,13 @@
+{%- if settings.logo -%}
+{% capture logo_size %}{{ settings.logo_width | escape }}x{% endcapture %}
+<a href="/" class="theme-logo">
+  <img src="{{ settings.logo | img_url: logo_size }}" alt="{{ shop.name }}"
+       {%- if settings.ratina_logo_enable -%}
+       srcset="{{ settings.logo | img_url: logo_size }} 1x, {{ settings.logo | img_url: logo_size, scale: 2 }} 2x"
+       {%- endif -%}>
+</a>
+{%- else -%}
+<a href="/">
+  <strong>{{ shop.name }}</strong>
+</a>
+{%- endif -%}

@@ -1,0 +1,353 @@
+{%- assign sset = section.settings -%}
+
+<div class="welcome_about_section" id="{{ sset.section_id }}">
+  <div class="container{% if sset.section_width == 'full_wide' %}-fluid{% endif %}">
+    <div class="row">
+      <div class="col-12">
+        <div class="welcome_about_inner">
+          {%- if sset.show_ban_img -%}
+          <a href="{{ sset.btn_url }}">
+            {%- if sset.ban_img -%}
+            <img src="{{ sset.ban_img | img_url: 'master' }}" alt="{{ image.alt }}">
+            {%- else -%}
+            <img src="https://via.placeholder.com/150x150" alt="{{ image.alt }}">
+            {%- endif -%}
+          </a>{%- endif -%}          
+          
+          {%- if sset.title1 != '' -%}
+          <p style="color: {{ sset.title1_color }};font-size: {{ sset.title1_font_size }}px">{{ sset.title1 }}</p>{%- endif -%}
+         
+          {% if sset.author_name != '' or sset.author_designation != '' %}
+          <p class="author" style="color: {{ sset.author_name_color }};font-size: {{ sset.author_name_font_size }}px">
+            {% if sset.author_name != '' %}{{ sset.author_name }}{% endif %}
+            {% if sset.author_designation != '' %}
+            <span style="color: {{ sset.author_designation_color }};font-size: {{ sset.author_designation_font_size }}px">{{ sset.author_designation }}</span>{% endif %}
+          </p>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{%- style -%}
+{%- include 'section-settings' -%}
+{%- endstyle -%}
+
+
+
+{% schema %}
+  {
+    "name": "Text Banner",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_id",
+            "label": "Section ID",
+            "default": "text-banner"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_ban_img",
+            "label": "Show Banner Image",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "ban_img",
+            "label": "Banner Image"
+        },
+        {
+            "type": "textarea",
+            "id": "title1",
+            "label": "Banner Text",
+            "default": "Eget scelerisque, mollis blandit et risus mauris phasellus ac. Felis amet dui metus purus mauris a, commodo amet phasellus id erat nec, pellentesque a, dictum orci porttitor et. Quis ac fames est ut, proin adipiscing in morbi elementum amet ligula. Habitant pellentesque laoreet lacus quisque consequat tincidunt diam vivamus sapien."
+        },
+        {
+            "type": "text",
+            "id": "author_name",
+            "label": "Author",
+            "default": "SILVESTER"
+        },
+        {
+            "type": "text",
+            "id": "author_designation",
+            "label": "Designation",
+            "default": " / CEO"
+        },
+        {
+            "type": "url",
+            "id": "btn_url",
+            "label": "URL",
+            "default": "\/"
+        },
+        {
+            "type": "header",
+            "content": "Font Size"
+        },
+        {
+            "type": "range",
+            "id": "title1_font_size",
+            "label": "Banner Text",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "author_name_font_size",
+            "label": "Author",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 12
+        },
+        {
+            "type": "range",
+            "id": "author_designation_font_size",
+            "label": "Designation",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 12
+        },
+        {
+            "type": "header",
+            "content": "Color"
+        },
+        {
+            "type": "color",
+            "id": "title1_color",
+            "label": "Banner Text Color",
+            "default": "#747474"
+        },
+        {
+            "type": "color",
+            "id": "author_name_color",
+            "label": "Author Color",
+            "default": "#242424"
+        },
+        {
+            "type": "color",
+            "id": "author_designation_color",
+            "label": "Designation Color",
+            "default": "#747474"
+        },
+        {
+            "type": "header",
+            "content": "Section Settings"
+        },
+        {
+            "type": "radio",
+            "id": "section_width",
+            "label": "Section Width",
+            "options": [
+                {
+                  "label": "Default",
+                  "value": "default"
+                },
+                {
+                  "label": "Full Wide",
+                  "value": "full_wide"
+                }
+            ],
+            "default": "default"
+        }
+	],
+    "blocks":[	
+	   {
+          "type": "section_padding",
+          "name": "Section Padding",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 100
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 80
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 60
+			}
+          ]
+       },
+	   {
+          "type": "section_margin",
+          "name": "Section Margin",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			}
+          ]
+       },
+	   {
+          "type": "section_background",
+          "name": "Section Background",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "image_picker",
+			  "id": "section_bg_image",
+			  "label": "BG Image"
+			},
+			{
+			  "type": "color",
+			  "id": "section_bg_color",
+			  "label": "BG Color",
+			  "default": "#ffffff"
+			}
+          ]
+       }
+	],
+	"presets":[
+		{
+			"name": "Text Banner",
+			"category": "2. Banner"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

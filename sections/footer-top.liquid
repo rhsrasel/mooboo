@@ -1,0 +1,759 @@
+{%- assign sset = section.settings -%}
+
+<div class="footer_top{% if sset.ft_width == 'full_wide' %} footer_compressed{% endif %}" id="section-{{ section.id }}">
+  {%- if sset.border_style == 'full' -%}
+  <div class="moo_footer_border">{%- endif -%}
+    <div class="container{% if sset.ft_width == 'full_wide' %}-fluid{% endif %}">
+      {%- if sset.border_style == 'default' -%}
+      <div class="moo_footer_border footer_ptb_90">{%- endif -%}
+        <div class="row">
+          {%- for block in section.blocks -%}{%- case block.type -%}
+          {%- when 'ft_menu' -%}{%- assign bset = block.settings -%}
+          <div class="col-lg-{{ bset.widget_col }} col-md-6">
+            <div class="widgets_container">
+              {%- if bset.title != '' -%}
+              <h3 style="color: {{ sset.ft_title_color }}">{{ bset.title }}</h3>{%- endif -%}
+              <div class="footer_menu">
+                <ul>
+                  {%- assign ft_menu = bset.ft_menu_handle -%}
+                  {%- for link in linklists[ft_menu].links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {%- when 'contact_us' -%}{%- assign bset = block.settings -%}
+          <div class="col-lg-{{ bset.widget_col }} col-md-6">
+            <div class="widgets_container contact_us">
+              {%- if bset.title != '' -%}
+              <h3 style="color: {{ sset.ft_title_color }}">{{ bset.title }}</h3>{%- endif -%}
+              <div class="footer_contact">
+                {%- if bset.content != '' -%}
+                <p>{{ bset.content }}</p>{%- endif -%}
+
+                {%- if bset.show_social -%}
+                <ul>
+                  {%- if bset.social_name_1 != '' -%}
+                  <li><a href="{{ bset.social_url_1 }}"><i class="fa fa-{{ bset.social_name_1 }}"></i></a></li>
+                  {%- endif -%}
+
+                  {%- if bset.social_name_2 != '' -%}
+                  <li><a href="{{ bset.social_url_2 }}"><i class="fa fa-{{ bset.social_name_2 }}"></i></a></li>
+                  {%- endif -%}
+
+                  {%- if bset.social_name_3 != '' -%}
+                  <li><a href="{{ bset.social_url_3 }}"><i class="fa fa-{{ bset.social_name_3 }}"></i></a></li>
+                  {%- endif -%}
+
+                  {%- if bset.social_name_4 != '' -%}
+                  <li><a href="{{ bset.social_url_4 }}"><i class="fa fa-{{ bset.social_name_4 }}"></i></a></li>
+                  {%- endif -%}
+
+                  {%- if bset.social_name_5 != '' -%}
+                  <li><a href="{{ bset.social_url_5 }}"><i class="fa fa-{{ bset.social_name_5 }}"></i></a></li>
+                  {%- endif -%}
+                </ul>{%- endif -%}
+              </div>
+            </div>
+          </div>
+
+          {%- when 'newsletter' -%}{%- assign bset = block.settings -%}
+          <div class="col-lg-{{ bset.widget_col }} col-md-6">
+            <div class="widgets_container newsletter">
+              {%- if bset.title != '' -%}
+              <h3 style="color: {{ sset.ft_title_color }}">{{ bset.title }}</h3>{%- endif -%}
+              <div class="newleter-content">
+                {%- if bset.content != '' -%}
+                <p style="color: {{ sset.ft_content_color }}">{{ bset.content }}</p>
+                {%- endif -%}
+                <form action="{{ settings.newsletter_action }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" novalidate>
+                  <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" name="EMAIL" class="email" placeholder="{{ settings.email_placeholder }}" required>
+                  <button type="submit">{{ settings.button_name }}</button>
+                </form>
+              </div>
+            </div>
+          </div>{%- endcase -%}{%- endfor -%}
+        </div>
+        {%- if sset.border_style == 'default' -%}
+      </div>{%- endif -%}
+    </div>
+    {%- if sset.border_style == 'full' -%} 
+  </div>{%- endif -%}
+</div>
+
+
+
+
+{%- style -%}
+  .moo_footer_border {
+    border-top: {% if sset.show_border_top %}1px solid {{ sset.border_top_color }}{% else %}none{% endif %};
+  }
+  .footer_menu ul li a, .footer_contact p, .footer_contact ul li a, .newleter-content p {
+    color: {{ sset.ft_content_color }};
+  }
+  .footer_menu ul li a:hover {
+    color: {{ sset.ft_menu_hover_color }};
+  }
+  .footer_contact ul li a:hover {
+    background: #242424;
+    color: #fff;
+    border-color: #242424;
+  }
+  .newleter-content form input::-moz-placeholder {
+    color: {{ sset.ft_content_color }} !important;
+  }
+  .newleter-content form input::-webkit-input-placeholder {
+    color: {{ sset.ft_content_color }} !important;
+  }
+  .newleter-content form input {
+    border-color: {{ sset.ft_content_color | color_modify: 'alpha', 0.2 }}
+  }
+  
+  {%- for block in section.blocks -%}{%- case block.type -%}{%- when 'newsletter' -%}{%- assign bset = block.settings -%}
+  .newleter-content form button {
+    background-color: {{ bset.subscribe_btn_bg_Color }};
+    color:{{ bset.subscribe_btn_Color }};
+    border-radius: {{ bset.subscribe_btn_border_radius }}px;
+  }
+  .newleter-content form button:hover {
+    background-color: {{ bset.subscribe_btnhover_bg_Color }};
+    color:{{ bset.subscribe_btnhover_Color }};
+  }{%- endcase -%}{%- endfor -%}
+  
+  #section-{{ section.id }} {
+    {%- for block in section.blocks -%}{%- case block.type -%}
+    {%- when 'section_margin' -%}{%- assign bset = block.settings -%}
+    margin-top: {{ bset.section_margin_top }}px;
+    margin-bottom: {{ bset.section_margin_bottom }}px;
+    {%- when 'section_background' -%}{%- assign bset = block.settings -%}
+    background: {{ bset.section_bg_color }} 
+      {%- if bset.section_bg_image -%}url("{{ bset.section_bg_image | img_url: 'master' }}"){%- endif -%} no-repeat scroll center center / cover;
+        {%- endcase -%}{%- endfor -%}
+  }  
+  .moo_footer_border {
+    {%- for block in section.blocks -%}{%- case block.type -%}
+    {%- when 'section_padding' -%}{%- assign bset = block.settings -%}
+    padding-top: {{ bset.section_padding_top }}px;
+    padding-bottom: {{ bset.section_padding_bottom }}px;
+        {%- endcase -%}{%- endfor -%}
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    #section-{{ section.id }}{
+      {%- for block in section.blocks -%}{% case block.type %}
+      {%- when 'section_margin' -%}{%- assign bset = block.settings -%}
+      margin-top: {{ bset.section_margin_top_md }}px;
+      margin-bottom: {{ bset.section_margin_bottom_md }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+    .moo_footer_border {
+      {%- for block in section.blocks -%}{%- case block.type -%}
+      {%- when 'section_padding' -%}{%- assign bset = block.settings -%}
+      padding-top: {{ bset.section_padding_top_md }}px;
+      padding-bottom: {{ bset.section_padding_bottom_md }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+
+  }
+  @media (max-width: 767px) {
+    #section-{{ section.id }}{
+      {%- for block in section.blocks -%}{%- case block.type -%}
+      {%- when 'section_margin' -%}{%- assign bset = block.settings -%}
+      margin-top: {{ bset.section_margin_top_xs }}px;
+      margin-bottom: {{ bset.section_margin_bottom_xs }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+    .moo_footer_border {
+      {%- for block in section.blocks -%}{%- case block.type -%}
+      {%- when 'section_padding' -%}{%- assign bset = block.settings -%}
+      padding-top: {{ bset.section_padding_top_xs }}px;
+      padding-bottom: {{ bset.section_padding_bottom_xs }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+  }
+{%- endstyle -%}
+
+
+
+{% schema %}
+  {
+    "name": "Footer Top",
+    "settings": [
+		{
+			"type": "header",
+			"content": "Widget Settings"
+		},
+		{
+			"type": "color",
+			"id": "ft_title_color",
+			"label": "Title Color",
+			"default": "#242424"
+		},
+		{
+			"type": "color",
+			"id": "ft_content_color",
+			"label": "Content Color",
+			"default": "#747474"
+		},
+		{
+			"type": "color",
+			"id": "ft_menu_hover_color",
+			"label": "Menu Hover Color",
+			"default": "#ff6a28"
+		},
+		{
+			"type": "header",
+			"content": "Section Settings"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_border_top",
+			"label": "Show Border Top",
+			"default": false
+		},
+        {
+            "type": "radio",
+            "id": "border_style",
+            "label": "Border Top Style",
+            "options": [
+                {
+                  "label": "Default",
+                  "value": "default"
+                },
+                {
+                  "label": "Full Wide",
+                  "value": "full"
+                }
+            ],
+            "default": "default"
+        },
+		{
+			"type": "color",
+			"id": "border_top_color",
+			"label": "Border Top Color",
+			"default": "#ddd"
+		},
+        {
+            "type": "radio",
+            "id": "ft_width",
+            "label": "Section Width",
+            "options": [
+                {
+                  "label": "Default",
+                  "value": "default"
+                },
+                {
+                  "label": "Full Wide",
+                  "value": "full_wide"
+                }
+            ],
+            "default": "default"
+        }
+	],
+    "blocks": [
+		{
+			"type": "contact_us",
+			"name": "Contact Us",
+			"settings": [
+                {
+                    "type": "select",
+                    "id": "widget_col",
+                    "label": "Select Column",
+                    "options": [
+                        {
+                            "label": "2",
+                            "value": "2"
+                        },
+                        {
+                            "label": "3",
+                            "value": "3"
+                        },
+                        {
+                            "label": "4",
+                            "value": "4"
+                        },
+                        {
+                            "label": "5",
+                            "value": "5"
+                        },
+                        {
+                            "label": "6",
+                            "value": "6"
+                        },
+                        {
+                            "label": "7",
+                            "value": "7"
+                        },
+                        {
+                            "label": "8",
+                            "value": "8"
+                        },
+                        {
+                            "label": "9",
+                            "value": "9"
+                        },
+                        {
+                            "label": "10",
+                            "value": "10"
+                        },
+                        {
+                            "label": "11",
+                            "value": "11"
+                        },
+                        {
+                            "label": "12",
+                            "value": "12"
+                        }
+                    ],
+                    "default": "4"
+                },
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Title",
+					"default": "Contact Us"
+				},
+				{
+					"type": "html",
+					"id": "content",
+					"label": "Content",
+					"default": "Address: 6688 Princess Road, London, Greater London BAS 23JK, UK<br>Phone: (+012) 800 456 789 - 987<br>Email: Contact@plazathemes.com",
+					"info": "Use '<br>' tag for line break. HTML code available."
+				},
+				{
+					"type": "header",
+					"content": "Social"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_social",
+					"label": "Show Social",
+					"default": true
+				},
+				{
+					"type": "paragraph",
+					"content": "[See More Icon](https:\/\/fontawesome.com\/v4.7.0\/icons\/)"
+				},
+				{
+					"type": "paragraph",
+					"content": "If you don't want a social, keep the field blank."
+				},
+				{
+					"type": "text",
+					"id": "social_name_1",
+					"label": "Social 1",
+					"default": "twitter"
+				},
+				{
+					"type": "url",
+					"id": "social_url_1",
+					"label": "Social 1 URL"
+				},
+				{
+					"type": "text",
+					"id": "social_name_2",
+					"label": "Social 2",
+					"default": "google-plus"
+				},
+				{
+					"type": "url",
+					"id": "social_url_2",
+					"label": "Social 2 URL"
+				},
+				{
+					"type": "text",
+					"id": "social_name_3",
+					"label": "Social 3",
+					"default": "facebook"
+				},
+				{
+					"type": "url",
+					"id": "social_url_3",
+					"label": "Social 3 URL"
+				},
+				{
+					"type": "text",
+					"id": "social_name_4",
+					"label": "Social 4",
+					"default": "youtube"
+				},
+				{
+					"type": "url",
+					"id": "social_url_4",
+					"label": "Social 4 URL"
+				},
+				{
+					"type": "text",
+					"id": "social_name_5",
+					"label": "Social 5"
+				},
+				{
+					"type": "url",
+					"id": "social_url_5",
+					"label": "Social 5 URL"
+				}
+			]			
+		},
+		{
+			"type": "ft_menu",
+			"name": "Footer Menu",
+			"settings": [
+                {
+                    "type": "select",
+                    "id": "widget_col",
+                    "label": "Select Column",
+                    "options": [
+                        {
+                            "label": "2",
+                            "value": "2"
+                        },
+                        {
+                            "label": "3",
+                            "value": "3"
+                        },
+                        {
+                            "label": "4",
+                            "value": "4"
+                        },
+                        {
+                            "label": "5",
+                            "value": "5"
+                        },
+                        {
+                            "label": "6",
+                            "value": "6"
+                        },
+                        {
+                            "label": "7",
+                            "value": "7"
+                        },
+                        {
+                            "label": "8",
+                            "value": "8"
+                        },
+                        {
+                            "label": "9",
+                            "value": "9"
+                        },
+                        {
+                            "label": "10",
+                            "value": "10"
+                        },
+                        {
+                            "label": "11",
+                            "value": "11"
+                        },
+                        {
+                            "label": "12",
+                            "value": "12"
+                        }
+                    ],
+                    "default": "2"
+                },
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Title",
+					"default": "Information"
+				},
+				{
+					"type": "link_list",
+					"id": "ft_menu_handle",
+					"label": "Select Menu"
+				}
+			]			
+		},
+		{
+			"type": "newsletter",
+			"name": "Newsletter Subscribe",
+			"settings": [
+                {
+                    "type": "select",
+                    "id": "widget_col",
+                    "label": "Select Column",
+                    "options": [
+                        {
+                            "label": "2",
+                            "value": "2"
+                        },
+                        {
+                            "label": "3",
+                            "value": "3"
+                        },
+                        {
+                            "label": "4",
+                            "value": "4"
+                        },
+                        {
+                            "label": "5",
+                            "value": "5"
+                        },
+                        {
+                            "label": "6",
+                            "value": "6"
+                        },
+                        {
+                            "label": "7",
+                            "value": "7"
+                        },
+                        {
+                            "label": "8",
+                            "value": "8"
+                        },
+                        {
+                            "label": "9",
+                            "value": "9"
+                        },
+                        {
+                            "label": "10",
+                            "value": "10"
+                        },
+                        {
+                            "label": "11",
+                            "value": "11"
+                        },
+                        {
+                            "label": "12",
+                            "value": "12"
+                        }
+                    ],
+                    "default": "4"
+                },
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Title",
+					"default": "Join Our Newsletter Now"
+				},
+				{
+					"type": "html",
+					"id": "content",
+					"label": "Content",
+					"default": "Exceptional quality. Ethical factories. Sign up to enjoy free U.S. shipping and returns on your first order."
+				},
+				{
+					"type": "header",
+					"content": "Subscribe Button"
+				},
+				{
+					"type": "color",
+					"id": "subscribe_btn_Color",
+					"label": "Text Color",
+					"default": "#fff"
+				},
+				{
+					"type": "color",
+					"id": "subscribe_btn_bg_Color",
+					"label": "BG Color",
+					"default": "#242424"
+				},
+				{
+					"type": "color",
+					"id": "subscribe_btnhover_Color",
+					"label": "Hover Text Color",
+					"default": "#fff"
+				},
+				{
+					"type": "color",
+					"id": "subscribe_btnhover_bg_Color",
+					"label": "Hover BG Color",
+					"default": "#ff6a28"
+				},
+                {
+                    "type": "range",
+                    "id": "subscribe_btn_border_radius",
+                    "label": "Border Radius",
+                    "max": 50,
+                    "min": 0,
+                    "step": 1,
+                    "default": 3,
+                    "unit": "px"
+                }
+			]			
+		},
+	   {
+          "type": "section_margin",
+          "name": "Section Margin",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			}
+          ]
+       },
+	   {
+          "type": "section_padding",
+          "name": "Section Padding",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 100
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 80
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 60
+			}
+          ]
+       },
+	   {
+          "type": "section_background",
+          "name": "Section Background",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "image_picker",
+			  "id": "section_bg_image",
+			  "label": "BG Image"
+			},
+			{
+			  "type": "color",
+			  "id": "section_bg_color",
+			  "label": "BG Color",
+			  "default": "#ffffff"
+			}
+          ]
+       }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

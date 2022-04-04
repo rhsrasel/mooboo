@@ -1,0 +1,326 @@
+{%- assign sset = section.settings -%}
+
+<div class="header_top" id="section-{{ section.id }}">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-lg-6 col-md-6">
+        <div class="header_top_logo_wrapper">
+          {% for block in section.blocks %}{% case block.type %}
+          {% when 'logo' %}{% assign bset = block.settings %}
+          <div class="logo">
+            {%- include 'header-logo' -%}
+          </div>{% endcase %}{% endfor %}
+          <div class="home_menu_bar">
+            <div class="icone_menu">
+              <a href="#"><i class="fa fa-bars"></i></a>
+              <div class="home_menu_inner">
+                {%- include 'main-menu-2' -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <div class="cart_area">
+          <div class="middel_links">
+            <ul>
+              {% for block in section.blocks %}{% case block.type %}
+              {% when 'search' %}{% assign bset = block.settings %}
+              <li class="search_btn"><a href="#"><i class="ion-ios-search-strong"></i></a></li>
+
+              {% when 'usermenu_currency' %}{% assign bset = block.settings %}
+              <li class="box_setting"><a href="#"><i class="fa fa-cog"></i></a>
+                <div class="dropdown_box_setting">
+                  <div class="setting_list">
+                    <h3>{{ bset.user_menu_title }}</h3>
+                    <ul>
+                      {%- include 'user-menu' -%}
+                    </ul>
+                  </div>
+                  <div class="setting_list currency">
+                    <h3>{{ bset.currency_title }} <span class="current-currency">{{ shop.currency }}</span></h3>
+                    {% assign currency = settings.supported_currencies | split: '|' %}
+                    <ul>
+                      {% for value in currency %}
+                      {% assign array = value | split: ',' %}
+                      {% assign iso_4217 = array[0] | upcase | strip %}
+                      {% assign name = array[1] | strip %}
+                      <li data-currency="{{ iso_4217 }}" class="currency__item"><a style="cursor: pointer">{{ name }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </li>{% endcase %}{% endfor %}
+            </ul>
+          </div>
+
+          {% for block in section.blocks %}{% case block.type %}
+          {% when 'mini_cart' %}{% assign bset = block.settings %}
+          <div class="cart_link">
+            {%- include 'mini-cart' -%}
+          </div>{% endcase %}{% endfor %}
+        </div>
+      </div>
+
+      {% for block in section.blocks %}{% case block.type %}
+      {% when 'search' %}{% assign bset = block.settings %}
+      <div class="dropdown_search_btn">        
+        <form action="/search" method="get" role="search">
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ bset.search_placeholder }}">
+          <button type="submit"><i class="ion-ios-search-strong"></i></button>
+        </form>        
+        <div class="button_close">
+          <button type="submit"><i class="ion-ios-close-empty"></i></button>
+        </div>
+      </div>{% endcase %}{% endfor %}
+    </div>
+  </div>
+</div>
+
+
+
+
+{%- style -%}
+  #section-{{ section.id }} .main_menu nav>ul>li>a, #section-{{ section.id }} .icone_menu>a i, #section-{{ section.id }} .icone_menu>a:not([href]):not([tabindex]) i
+  #section-{{ section.id }} .home_menu_inner nav>ul>li ul li a, #section-{{ section.id }} .home_menu_inner nav>ul>li>a {
+    color: {{ sset.menu_color }} !important;
+  }
+  #section-{{ section.id }} .main_menu nav ul li ul li a:hover, #section-{{ section.id }} .main_menu nav ul li ul li.active a, 
+  #section-{{ section.id }} .main_menu nav>ul>li.active>a, #section-{{ section.id }} .main_menu nav>ul>li:hover>a,
+  #section-{{ section.id }} .main_menu nav>ul>li>ul.mega_menu li ul li a:hover, #section-{{ section.id }} .icone_menu>a:hover i,
+  #section-{{ section.id }} .home_menu_inner nav>ul>li:hover>a, #section-{{ section.id }} .icone_menu>a:not([href]):not([tabindex]) i:hover,
+  #section-{{ section.id }} .home_menu_inner nav>ul>li ul li a:hover,  #section-{{ section.id }} .main_menu nav ul li ul li a:hover, 
+  #section-{{ section.id }} .main_menu nav ul li ul li.active a, #section-{{ section.id }} .main_menu nav>ul>li.active>a, .main_menu nav>ul>li:hover>a {
+  	color: {{ sset.main_menu_hover_color }} !important;
+  }
+
+  {%- for block in section.blocks -%}{%- case block.type -%}
+  {%- when 'search' -%}{%- assign bset = block.settings -%}
+  .header_five .dropdown_search_btn form input {    
+    color: {{ bset.input_text_color }};
+    border-bottom: 3px solid {{ bset.input_text_color }};
+  }
+  .header_five .dropdown_search_btn form input[type="search"]::-moz-placeholder {
+    color: {{ bset.input_text_color }} !important;
+  }
+  .header_five .dropdown_search_btn form input[type="search"]::-webkit-input-placeholder {
+    color: {{ bset.input_text_color }} !important;
+  }
+  .header_five .dropdown_search_btn form input[type="search"]::-ms-input-placeholder {
+    color: {{ bset.input_text_color }} !important;
+  }
+  .header_five .middel_links>ul>li.search_btn >a {
+    color: {{ bset.icon_color }};
+  }  
+  .header_five .middel_links>ul>li.search_btn >a:hover, .header_five .dropdown_search_btn .button_close button:hover, .header_five .dropdown_search_btn form button:hover {
+    color: {{ bset.icon_hover_color }};
+  }  
+  {%- when 'mini_cart' -%}{%- assign bset = block.settings -%}
+  .cart_link > a {
+    color: {{ bset.content_color }} !important;
+    border: 1px solid {{ bset.border_color }};
+    border-radius: {{ bset.border_radius }}px;
+  }
+  .cart_link > a i, .middel_right_info .search_bar form button:hover {
+    color: {{ bset.content_color }};
+  }
+{%- endcase -%}{%- endfor -%}
+{%- endstyle -%}
+
+
+
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+		{
+			"type": "header",
+            "content": "Main Menu"
+        },
+		{
+			"type": "color",
+			"id": "menu_color",
+			"label": "Menu Text Color",
+			"default": "#242424"
+		},
+		{
+			"type": "color",
+			"id": "main_menu_hover_color",
+			"label": "Menu Hover Text Color",
+			"default": "#ff6a28"
+		}
+	],
+    "blocks": [
+		{
+			"type": "logo",
+			"name": "Logo",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "paragraph",
+					"content": "Upload logo from Theme settings > General Settings"
+				}
+			]			
+		},
+		{
+			"type": "search",
+			"name": "Search Box",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "text",
+					"id": "search_placeholder",
+					"label": "Placeholder Text",
+					"default": "Search entire store here..."
+				},
+                {
+                    "type": "color",
+                    "id": "input_text_color",
+                    "label": "Placeholder & Input Text Color",
+                    "default": "#a4a4a4"
+                },
+                {
+                    "type": "color",
+                    "id": "icon_color",
+                    "label": "Icon Color",
+                    "default": "#747474"
+                },
+                {
+                    "type": "color",
+                    "id": "icon_hover_color",
+                    "label": "Icon Hover Color",
+                    "default": "#ff6a28"
+                }
+			]			
+		},
+		{
+			"type": "usermenu_currency",
+			"name": "User Menu and Currency",
+			"limit": 1,
+			"settings": [
+                {
+                    "type": "header",
+                    "content": "User Menu"
+                },
+				{
+					"type": "checkbox",
+					"id": "show_usermenu",
+					"label": "Show User Menu",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "user_menu_title",
+					"label": "User Menu Title",
+					"default": "My Account"
+				},
+                {
+                    "type": "link_list",
+                    "id": "user_menu_handle",
+                    "label": "Select User Menu"
+                },
+                {
+                  "type": "paragraph",
+                  "content": "Details- Theme settings > Login-Register"
+                },
+                {
+                    "type": "header",
+                    "content": "Currency"
+                },
+				{
+					"type": "checkbox",
+					"id": "show_currency",
+					"label": "Show Currency",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "currency_title",
+					"label": "Currency Title",
+					"default": "Currency: "
+				},
+                {
+                  "type": "paragraph",
+                  "content": "Details- Theme settings > Currency"
+                }
+			]
+		},
+		{
+			"type": "mini_cart",
+			"name": "Mini Cart",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "text",
+					"id": "cart_item_title",
+					"label": "Item Title",
+					"default": "Item(s)"
+				},
+				{
+					"type": "text",
+					"id": "cart_total_title",
+					"label": "Total Title",
+					"default": "Total: "
+				},
+				{
+					"type": "text",
+					"id": "view_cart_title",
+					"label": "View Cart",
+					"default": "View Cart"
+				},
+				{
+					"type": "text",
+					"id": "checkout_title",
+					"label": "Checkout",
+					"default": "Checkout"
+				},
+				{
+					"type": "text",
+					"id": "empty_cart_title",
+					"label": "Empty Cart",
+					"default": "Your cart is currently empty."
+				},
+				{
+					"type": "text",
+					"id": "continue_shopping_title",
+					"label": "Continue Shopping",
+					"default": "Continue shopping"
+				},
+                {
+                    "type": "header",
+                    "content": "Color"
+                },
+                {
+                    "type": "color",
+                    "id": "content_color",
+                    "label": "Content Color",
+                    "default": "#747474"
+                },
+                {
+                    "type": "color",
+                    "id": "border_color",
+                    "label": "Border Color",
+                    "default": "#ddd"
+                },
+				{
+					"type": "range",
+					"id": "border_radius",
+					"label": "Border Radius",
+					"max": 50,
+					"min": 0,
+					"step": 1,
+					"default": 30,
+                    "unit": "px"
+				}
+			]			
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,310 @@
+{%- assign sset = section.settings -%}
+
+<div class="about_section">
+  <div class="container">
+    {%- for block in section.blocks -%}{%- case block.type -%}
+    {%- when 'content' -%}{%- assign bset = block.settings -%}
+    <div class="row about_sect">
+      {%- if bset.show_content -%}
+      <div class="col-lg-{% if bset.show_ban_img %}6{% else %}12{% endif %} col-md-12">
+        <div class="about_content">
+          {%- if bset.about_title != '' -%}
+          <h1>{{ bset.about_title }}</h1>{%- endif -%}
+          
+          {%- if bset.about_content != '' -%}
+          <p>{{ bset.about_content }}</p>{%- endif -%}
+
+          {%- if bset.about_btn != '' -%}
+          <div class="view__work">
+            <a href="{{ bset.about_btn_url }}">{{ bset.about_btn }}</a>
+          </div>{%- endif -%}          
+        </div>
+      </div>{%- endif -%}
+
+      {%- if bset.show_ban_img -%}
+      <div class="col-lg-{% if bset.show_content %}6{% else %}12{% endif %} col-md-12">
+        <div class="about_thumb">
+          {%- if bset.ban_img -%}
+          <img src="{{ bset.ban_img | img_url: 'master' }}" alt="{{ image.alt }}">
+          {%- else -%}
+          <img src="https://via.placeholder.com/960x635" alt="{{ image.alt }}">{%- endif -%}
+        </div>
+      </div>{%- endif -%}
+    </div>{%- endcase -%}{%- endfor -%}    
+  </div>     
+</div>
+
+
+
+{%- style -%}
+  .about_sect {
+    {%- for block in section.blocks -%}{%- case block.type -%}
+    {%- when 'section_margin' -%}
+    margin-top: {{ block.settings.section_margin_top }}px;
+    margin-bottom: {{ block.settings.section_margin_bottom }}px;
+    {%- when 'section_padding' -%}
+    padding-top: {{ block.settings.section_padding_top }}px;
+    padding-bottom: {{ block.settings.section_padding_bottom }}px;
+    {%- endcase -%}
+    {%- endfor -%}
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    .about_sect {
+      {%- for block in section.blocks -%}{% case block.type %}
+      {%- when 'section_margin' -%}
+      margin-top: {{ block.settings.section_margin_top_md }}px;
+      margin-bottom: {{ block.settings.section_margin_bottom_md }}px;
+      {%- when 'section_padding' -%}
+      padding-top: {{ block.settings.section_padding_top_md }}px;
+      padding-bottom: {{ block.settings.section_padding_bottom_md }}px;
+      {%- endcase -%}{%- endfor -%}
+    }
+  }
+  @media (max-width: 767px) {
+    .about_sect {
+      {%- for block in section.blocks -%}
+      {%- case block.type -%}
+      {%- when 'section_margin' -%}
+      margin-top: {{ block.settings.section_margin_top_xs }}px;
+      margin-bottom: {{ block.settings.section_margin_bottom_xs }}px;
+      {%- when 'section_padding' -%}
+      padding-top: {{ block.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ block.settings.section_padding_bottom_xs }}px;
+      {%- endcase -%}
+      {%- endfor -%}
+    }
+  }
+{%- endstyle -%}
+
+
+
+
+{% schema %}
+  {
+    "name": "About Template",
+    "settings": [],
+    "blocks":[
+        {
+          "type": "content",
+          "name": "Content",
+          "settings": [
+                {
+                    "type": "header",
+                    "content": "Content"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "show_content",
+                    "label": "Show Content",
+                    "default": true
+                },
+                {
+                    "type": "text",
+                    "id": "about_title",
+                    "label": "Title",
+                    "default": "Welcome To Mooboo Store!"
+                },
+                {
+                    "type": "textarea",
+                    "id": "about_content",
+                    "label": "Content",
+                    "default": "Quibusdam perspiciatis pariatur magnam ducimus excepturi error libero provident animi laboriosam maiores ad explicabo ea laudantium nostrum dolor distinctio, quas fugiat doloribus, sit, possimus obcaecati ab quo vel commodi eum. Laudantium libero, voluptate rerum sunt hic,<br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse numquam blanditiis quos, fuga, aspernatur doloribus expedita, soluta dolore cumque.",
+					"info": "Use '<br>' tag for line break"
+                },
+                {
+                    "type": "text",
+                    "id": "about_btn",
+                    "label": "Button",
+                    "default": "View Work"
+                },
+                {
+                    "type": "url",
+                    "id": "about_btn_url",
+                    "label": "URL",
+                    "default": "\/"
+                },
+                {
+                    "type": "header",
+                    "content": "Content"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "show_ban_img",
+                    "label": "Show Image",
+                    "default": true
+                },
+                {
+                    "type": "image_picker",
+                    "id": "ban_img",
+                    "label": "Image"
+                }
+        	]
+        },
+	
+	   {
+          "type": "section_padding",
+          "name": "Section Padding",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 60
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 60
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 60
+			}
+          ]
+       },
+	   {
+          "type": "section_margin",
+          "name": "Section Margin",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			}
+          ]
+       }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

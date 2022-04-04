@@ -1,0 +1,266 @@
+<div class="blog_area moo_section_margin{% if section.settings.section_width == 'full_wide' %} product_section{% endif %}">
+  <div class="container{% if section.settings.section_width == 'full_wide' %}-fluid{% endif %}">
+    <div class="row{% if section.settings.sidebar_handle == 'left_sidebar_handle' %} flex-row-reverse{% endif %}">
+      <div class="{% if section.settings.sidebar_handle == 'without_sidebar' %}col-md-12{% else %}col-lg-9 col-md-12{% endif %}">
+        <div class="blog_details_wrapper">
+          <div class="blog__thumb">
+            <img src="{{ article | img_url: '1170x810', crop:'center' }}" alt="{{ article.image.alt }}">
+          </div>
+          <div class="blog_info_wrapper">
+            <div class="blog_info_inner">
+              <div class="post__date">
+                <span class="day">{{ article.published_at | date: '%d' }}</span>
+                <span class="month">{{ article.published_at | date: '%b' }}</span>
+              </div>
+              <div class="post__info">
+                <div class="post_header">
+                  <h3>{{ article.title }}</h3>
+                </div>
+                <div class="post_meta">
+                  <span>{{ article.author }} </span>
+                </div>
+                <div class="post_content">
+                  {{ article.content }}		
+                </div>
+                <div class="post_meta">
+                  {% if blog.comments_enabled? %}
+                  <span><a href="{{ article.url }}#comments"> {{ 'blogs.comments.with_count' | t: count: article.comments_count }}</a> /</span>
+                  {% endif %}
+                  
+                  {% if section.settings.show_blog_tag %}
+                  {% include 'tags-article' %}{% endif %}
+                </div>
+                
+                {%- if section.settings.show_blog_share -%}
+                <div class="social_sharing">
+                  {%- include 'blog-share' -%}                                      
+                </div>{%- endif -%}
+              </div>
+            </div>
+
+            {%- if article.comments_enabled? -%}
+            {%- assign comment_post_limit = section.settings.comment_post_limit_handle -%}
+            {%- paginate article.comments by comment_post_limit -%}
+            <div id="comments" class="comment-success">
+              {%- if article.comments.size > 0 -%}
+              {%- include 'blog-comments' -%}
+              {%- endif -%}
+              {%- if paginate.pages > 1 -%}
+              <div class="comment-pagination">
+                {% include 'pagination' %}
+              </div>
+              {%- endif -%}
+              {%- endpaginate -%}
+
+              {%- if comment and comment.created_at -%}
+              <p class="note form-success">
+                {%- if blog.comments_modareted? -%}
+                {{ 'blogs.comments.success_moderated' | t }}            
+                {%- else -%}
+                {{ 'blogs.comments.success' | t }}
+                {%- endif -%}
+              </p>
+              {%- endif -%}
+              {%- include 'blog-comment-form' -%}
+            </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      {%- unless section.settings.sidebar_handle == 'without_sidebar' -%}
+      <div class="col-lg-3 col-md-12">
+        {% include 'blog-sidebar' %}
+      </div>
+      {%- endunless -%}
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Article Page",
+    "settings": [
+        {
+            "type": "radio",
+            "id": "section_width",
+            "label": "Page Width",
+            "options": [
+                {
+                  "label": "Default",
+                  "value": "default"
+                },
+                {
+                  "label": "Full Wide",
+                  "value": "full_wide"
+                }
+            ],
+            "default": "default"
+        },
+		{
+            "type": "checkbox",
+            "id": "show_blog_tag",
+            "label": "Show Tag",
+            "default": true
+      	},
+		{
+            "type": "checkbox",
+            "id": "show_blog_share",
+            "label": "Show Blog Share",
+            "default": true
+      	},
+		{
+            "type": "text",
+            "id": "social_share_title",
+            "label": "Blog Share Title",
+            "default": "Share this post"
+      	},
+		{
+			"type": "header",
+			"content": "Comment Box"
+		},
+		{
+            "type": "text",
+            "id": "comment_title",
+            "label": "Comment Title",
+            "default": "Leave a Reply"
+      	},
+		{
+            "type": "textarea",
+            "id": "comment_subtitle",
+            "label": "Comment Subtitle",
+            "default": "Your email address will not be published."
+      	},
+		{
+			"type": "image_picker",
+			"id": "commentator_image",
+			"label": "Comment Thumb Image",
+			"info": "Recommended Size: 80 x 80px"
+		},
+		{
+            "type": "range",
+            "id": "comment_post_limit_handle",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "label": "How Many Comment Post Show",
+            "default": 5
+        },
+		{
+			"type": "header",
+			"content": "Article Sidebar"
+		},
+		{
+			"type": "radio",
+			"id": "sidebar_handle",
+			"label": "Sidebar Position",
+			"options": [
+				{
+					"label": "Left Sidebar",
+					"value": "left_sidebar_handle"
+				},
+				{
+					"label": "Right Sidebar",
+					"value": "right_sidebar_handle"
+				},
+				{
+					"label": "Without Sidebar",
+					"value": "without_sidebar"
+				}
+			],
+			"default": "left_sidebar_handle"
+		}
+	],
+	 "blocks":[
+		{
+          "type": "search",
+          "name": "Search",
+		  "limit": 1,
+          "settings": [
+            {
+              "type": "text",
+              "id": "wedget_title",
+              "label": "Title",
+              "default": "Search"
+            }
+          ]
+       },
+	   {
+          "type": "recent_post",
+          "name": "Recent Post",
+		  "limit": 1,
+          "settings": [
+            {
+              "type": "text",
+              "id": "recent_post_title",
+              "label": "Recent Post Title",
+              "default": "Recent Post"
+			},
+            {
+              "type": "range",
+              "id": "recent_post_limit_handle",
+              "min": 2,
+              "max": 10,
+              "step": 1,
+              "label": "Post Limit",
+              "default": 3
+            }
+          ]
+       },
+	   {
+          "type": "archive",
+          "name": "Archive",
+		  "limit": 1,
+          "settings": [
+            {
+              "type": "text",
+              "id": "archive_title",
+              "label": "Archive Title",
+              "default": "Archive"
+            }
+          ]
+       },
+	   {
+          "type": "tag",
+          "name": "Tag",
+		  "limit": 1,
+          "settings": [
+            {
+              "type": "text",
+              "id": "blog_tags_title",
+              "label": "Tags Title",
+              "default": "Tags"
+			},
+            {
+              "type": "range",
+              "id": "blog_tags_list_limit_handle",
+              "min": 5,
+              "max": 20,
+              "step": 1,
+              "label": "Tag Limit",
+              "default": 10
+            }
+          ]
+       },
+	   {
+          "type": "menu",
+          "name": "Menu",
+          "settings": [
+            {
+              "type": "text",
+              "id": "menu_title",
+              "label": "Menu Title",
+              "default": "Custom Menu"
+            },
+			{
+              "type": "link_list",
+              "id": "menu_handle",
+              "label": "Menu"
+            }
+          ]
+       }
+	]
+  }
+{% endschema %}

@@ -1,0 +1,89 @@
+{%- assign sset = section.settings -%}
+
+{%- if sset.enable_nav_section -%}
+<div id="fp-nav" class="right">
+  <ul>
+    {% for block in section.blocks %}
+    <li><a href="#" class="add_active{% if forloop.first %} active{% endif %}" data-scroll="{{ block.settings.nav_id }}"><span></span></a>
+      <div class="fp-tooltip right"></div>
+    </li>{% endfor %}
+  </ul>
+</div>
+
+
+{%- style -%}
+  #fp-nav ul li a span {
+  	background: {{ sset.nav_color }};
+  }
+  #fp-nav ul li a.active span {
+  	background: {{ sset.nav_active_color }};
+  }
+{%- endstyle -%}
+
+
+<script>
+  $('a[data-scroll]').click(function(e) {
+    e.preventDefault();
+    var offset = 10;
+    var target = ('#' + $(this).data('scroll'));
+    var $target = $(target);
+    $('html, body').stop().animate({
+      'scrollTop': $target.offset().top - offset
+    }, 800, 'swing');
+  });
+
+  $('.add_active').click(function(e) {
+    e.preventDefault();
+    $('.add_active').removeClass('active');
+    $(this).addClass('active');
+  });
+</script>
+{%- endif -%}
+
+
+
+{% schema %}
+  {
+    "name": "Nav Section",
+    "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable_nav_section",
+          "label": "Show Nav Section",
+          "default": false
+      	},
+		{
+          "type": "color",
+          "id": "nav_color",
+          "label": "Nav Color",
+          "default": "#242424"
+      	},
+		{
+          "type": "color",
+          "id": "nav_active_color",
+          "label": "Active Nav Color",
+          "default": "#242424"
+      	}
+	],
+    "blocks": [
+	   {
+          "type": "navigation",
+          "name": "Add Nav ID",
+          "settings": [
+			{
+			  "type": "text",
+			  "id": "nav_id",
+			  "label": "Nav ID",
+			  "default": "1"
+			}
+		  ]
+	   }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,78 @@
+<h1 id="popup_cart_title">{{ product.title }}</h1>
+
+{%- if section.settings.product_review_enable -%}
+<div class="product_ratting">
+  <ul>
+    <li><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></li>
+  </ul>
+</div>{%- endif -%}
+
+<div class="product_price">
+  <span id="ProductPrice" class="current_price">{{ product.variants.first.price | money }}</span>
+  {% if product.variants.first.compare_at_price > product.variants.first.price %}
+  <span id="ComparePrice" class="old_price">{{ product.variants.first.compare_at_price | money }}</span>{% endif %}
+</div>
+
+{%- if product.description contains '[countdown]' -%}
+{%- assign count_down_first = product.description | split:'[/countdown]' | first -%}
+{%- assign count_down_final = count_down_first | split:'[countdown]' | last -%}
+<div class="mb-20 prod_countdown" data-countdown="{{ count_down_final }}"></div>{%- endif -%}
+
+{%- unless section.settings.product_description_handle == 'without_description' -%}
+    {%- if section.settings.product_description_handle == 'full_description' -%}
+    	{{ product.description | split: '[short_description]' | first | split: '[product_description]' | first | split: '[new_products]' | first | split: '[product_video]' | first | split: '[affiliate_link]' | first | split: '[countdown]' | first }}
+    {%- elsif section.settings.product_description_handle == 'short_description' -%}
+        <div class="product_desc">
+          {%- if product.description contains '[short_description]' -%} 
+            {%- assign short_description_first = product.description | split:'[/short_description]' | first -%}
+            {%- assign short_description_final = short_description_first | split:'[short_description]' | last -%}
+            {{ short_description_final }}
+          {%- else -%}
+            {%- assign truncatewords_count = section.settings.truncatewords_count_handle -%}
+            <p>{{ product.description | strip_html | truncatewords: truncatewords_count | split: '[short_description]' | first | split: '[product_description]' | first | split: '[new_products]' | first | split: '[product_video]' | first | split: '[affiliate_link]' | first | split: '[countdown]' | first }}</p>
+          {%- endif -%}
+        </div>
+    {%- endif -%}
+{%- endunless -%}
+
+{%- include 'product-variant' -%}
+{%- include 'single-product-action' -%}
+
+<div class="product_d_action">
+  <ul>    
+    {% if settings.wishlist_enable %}
+    <li>
+      {% if customer %}
+      <a class="action-wishlist tile-actions--btn flex wishlist-btn wishlist wish_action" href="#" data-product-handle="{{ product.handle }}">
+        <span class="add_wish"><i class="fa fa-heart-o"></i> {{ settings.add_wishlit_title }}</span>
+        <span class="wish_wait"><i class="fa fa-circle-o-notch fa-spin"></i> {{ settings.loading_wishlist }}</span>
+        <span class="added_wish"><i class="fa fa-check"></i> {{ settings.remove_wishlit_title }}</span>
+      </a>
+      {% else %}
+      <a class="wishlist" href="/account/login"><i class="fa fa-heart-o"></i> {{ settings.add_wishlit_title }}</a>
+      {% endif %}
+    </li>{% endif %}
+        
+    {% if current_variant.sku.size > 0 and section.settings.product_sku_enable %}
+    <li>      
+      <span class="product-sku">{{ section.settings.product_sku_title }} <span class="variant-sku d-inline-block">{{ current_variant.sku }}</span></span>  
+    </li>
+    {% endif %}
+  </ul>
+</div>
+
+<div class="product_d_meta mb-20 moo_product_d_meta">  
+  {% if section.settings.show_cat and product.collections.size > 0 %}
+  <span>{{ section.settings.cat_title }} 
+    {% for collection in product.collections limit: 3 %}
+    <a href="{{ collection.url }}">{{ collection.title }}</a>{% unless forloop.last %}, {% endunless %}
+    {% endfor %}
+  </span>{% endif %}
+
+  {% if section.settings.show_tag and product.tags.size > 0 %}
+  <span>{{ section.settings.tag_title }} 
+    {% for tag in product.tags limit: 5 %}
+    <a href="/collections/all/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
+    {% endfor %}
+  </span>{% endif %}  
+</div>

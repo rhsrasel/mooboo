@@ -1,0 +1,169 @@
+{%- if section.settings.faq_section_title != '' or section.settings.faq_section_title_desc != '' -%}
+<div class="faq_content_area">
+  <div class="container">   
+    <div class="row">
+      <div class="col-12">
+        <div class="faq_content_wrapper">
+          {% if section.settings.faq_section_title != '' %}
+          <h4>{{ section.settings.faq_section_title }}</h4>
+          {% endif %}
+          {% if section.settings.faq_section_title_desc != '' %}
+          <p>{{ section.settings.faq_section_title_desc }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div> 
+  </div>    
+</div>{%- endif -%}
+
+<div class="accordion_area" id="section-{{ section.id }}">
+  <div class="container">
+    <div class="row">
+      <div class="col-12"> 
+        <div id="accordion" class="card__accordion">
+          {%- for block in section.blocks -%}{%- case block.type -%}
+          {%- when 'faq' -%}
+          <div class="card card_dipult">
+            <div class="card-header card_accor" id="heading-{{ forloop.index }}">
+              <button class="btn btn-link {% unless forloop.first == true %} collapsed {% endunless %}" data-toggle="collapse" data-target="#collapse-{{ forloop.index }}" aria-expanded=" {% if forloop.first == true %}true{% else %} false {% endif %}" aria-controls="collapse-{{ forloop.index }}">
+                {{ block.settings.faq_title }}
+                <i class="fa fa-plus"></i>
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+            <div id="collapse-{{ forloop.index }}" class="collapse {% if forloop.first == true %}show{% endif %} " aria-labelledby="heading-{{ forloop.index }}" data-parent="#accordion">
+              <div class="card-body">
+                <p> {{ block.settings.faq_desc }}</p>
+              </div>
+            </div>
+          </div>{%- endcase -%}{%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<style>
+  {% for block in section.blocks %}{% case block.type %}
+  {% when 'faq_typography' %}
+  #section-{{ section.id }} .card-header.card_accor button.btn-link.collapsed {
+    border-left-color: {{ block.settings.faq_border_color }};
+    border-top-color: {{ block.settings.faq_border_color }};
+    border-right-color: {{ block.settings.faq_border_color }};
+    border-bottom-color: {{ block.settings.faq_border_color }};
+    color: {{ block.settings.faq_color }};
+    background: {{ block.settings.faq_default_bg_color }};
+  }
+  #section-{{ section.id }} .collapse.show {
+    border-left-color: {{ block.settings.faq_border_ative_color }};
+    border-bottom-color: {{ block.settings.faq_border_ative_color }};
+    border-right-color: {{ block.settings.faq_border_ative_color }};
+  }
+
+  #section-{{ section.id }} .card-header.card_accor button.btn-link {
+    border-left-color: {{ block.settings.faq_border_ative_color }};
+    border-top-color: {{ block.settings.faq_border_ative_color }};
+    border-right-color: {{ block.settings.faq_border_ative_color }};
+    border-bottom-color: {{ block.settings.faq_border_bottom_color }};
+    color: {{ block.settings.faq_ative_color }};
+    background: {{ block.settings.faq_active_bg_color }};
+  }
+  {% endcase %}
+  {% endfor %}
+</style>
+
+
+{% schema %}
+  {
+    "name": "Faq",
+    "settings": [
+        {
+          "type": "textarea",
+          "id": "faq_section_title",
+          "label": "Section title",
+          "default": "Below are frequently asked questions, you may find the answer for yourself"
+        },
+		{
+          "type": "textarea",
+          "id": "faq_section_title_desc",
+          "label": "Content",
+          "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id erat sagittis, faucibus metus malesuada, eleifend turpis. Mauris semper augue id nisl aliquet, a porta lectus mattis. Nulla at tortor augue. In eget enim diam. Donec gravida tortor sem, ac fermentum nibh rutrum sit amet. Nulla convallis mauris vitae congue consequat. Donec interdum nunc purus, vitae vulputate arcu fringilla quis. Vivamus iaculis euismod dui."
+        }	
+	],
+	"blocks":[
+      {
+          "type": "faq",
+          "name": "FAQ Content",
+          "settings": [
+            {
+              "type": "textarea",
+              "id": "faq_title",
+              "label": "Title",
+              "default": "Mauris congue euismod purus at semper. Morbi et vulputate massa?"
+            },
+            {
+              "type": "textarea",
+              "id": "faq_desc",
+              "label": "Description",
+              "default": "Donec mattis finibus elit ut tristique. Nullam tempus nunc eget arcu vulputate, eu porttitor tellus commodo. Aliquam erat volutpat. Aliquam consectetur lorem eu viverra lobortis. Morbi gravida, nisi id fringilla ultricies, elit lorem eleifend lorem"
+            }
+
+         ]
+  	  },
+	  {
+          "type": "faq_typography",
+          "name": "Faq Typography",
+          "settings": [
+              {
+               "type": "header",
+               "content": "Faq Typography"
+              },
+              {
+                "type": "color",
+                "id": "faq_border_color",
+                "label": "Faq Border Color",
+                "default": "#ddd"	
+              },
+              {
+                "type": "color",
+                "id": "faq_color",
+                "label": "Faq Text Color",
+                "default": "#242424"	
+              },
+              {
+                "type": "color",
+                "id": "faq_default_bg_color",
+                "label": "Faq Default Bg Color",
+                "default": "#f2f2f2"	
+              },
+              {
+               "type": "paragraph",
+               "content": "Faq Active Color"
+              },
+              {
+                "type": "color",
+                "id": "faq_border_ative_color",
+                "label": "Faq Active Border Color",
+                "default": "#ff6a28"	
+              },
+              {
+                "type": "color",
+                "id": "faq_ative_color",
+                "label": "Faq Active Text Color",
+                "default": "#242424"	
+              },
+              {
+                "type": "color",
+                "id": "faq_active_bg_color",
+                "label": "Faq Active Bg Color",
+                "default": "#f2f2f2"	
+              }
+
+         ]
+  	  }
+	  
+    ]
+  }
+{% endschema %}

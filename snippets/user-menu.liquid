@@ -1,0 +1,11 @@
+{%- assign user_menu = bset.user_menu_handle -%}
+{%- for link in linklists[user_menu].links -%}
+<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+{%- endfor -%}
+
+{%- if customer and shop.customer_accounts_enabled -%}
+<li>{{ settings.logout_title | customer_logout_link }}</li>
+{%- else -%}
+<li>{{ settings.login_title | customer_login_link }}</li>
+<li>{{ settings.register_title | customer_register_link }}</li>
+{%- endif -%}

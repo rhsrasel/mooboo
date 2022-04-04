@@ -1,0 +1,32 @@
+<div class="comments_form">
+  {% form 'new_comment', article %}
+  {{ form.errors | default_errors }}
+
+  {%- if section.settings.comment_title != '' -%}
+  <h3>{{ section.settings.comment_title }}</h3>{%- endif -%}
+  
+  {%- if section.settings.comment_subtitle != '' -%}
+  <p>{{ section.settings.comment_subtitle }}</p>{%- endif -%}
+
+  <div class="row">
+    <div class="col-12">
+      <label for="review_comment">Comment </label>
+      <textarea class="custom-textarea" name="comment[body]" id="commentBody"  placeholder="{{ 'blogs.comments.message' | t }}">{{ form.body }}</textarea>
+    </div> 
+    <div class="col-lg-6 col-md-6">
+      <label for="author">Name</label>
+      <input type="text" class="{% if form.errors contains 'author' %}error{% endif %}" name="comment[author]" id="commentAuthor" value="{{ form.author }}" placeholder="{{ 'blogs.comments.name' | t }}">
+    </div> 
+    <div class="col-lg-6 col-md-6">
+      <label for="email">Email </label>
+      <input type="text" class="{% if form.errors contains 'email' %}error{% endif %}" name="comment[email]" id="commentEmail" value="{{ form.email }}" placeholder="{{ 'blogs.comments.email' | t }}">
+    </div>  
+  </div>
+  
+  {% if blog.moderated? %}
+  <p>{{ 'blogs.comments.moderated' | t }}</p>
+  {% endif %}
+
+  <button class="button blog_comment_btn" type="submit">{{ 'blogs.comments.post' | t }}</button>  
+  {% endform %}
+</div>

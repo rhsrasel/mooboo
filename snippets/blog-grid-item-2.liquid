@@ -1,0 +1,28 @@
+<div class="blog_grid">
+  {% if article.image %}
+  <div class="blog_thumb">
+    <a href="{{ article.url }}">{{ article | img_url: '750x510' , crop:'center' | img_tag: article.title }}</a>
+  </div>
+  {% endif %}
+  <div class="blog_content">
+    <div class="post_date">
+      <span class="day">{{ article.published_at | date: '%d' }}</span>
+      <span class="month">/ {{ article.published_at | date: '%b' }}</span>
+    </div>
+    <h3 class="post_title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+    <p class="post_desc">
+      {% if article.excerpt.size > 0 %}
+      {{ article.excerpt }}
+      {% else %}
+      {{ article.content | strip_html | truncatewords: 20 }}
+      {% endif %}
+    </p>
+    <a class="read_more" href="{{ article.url }}">{{ 'blogs.article.read_more' | t }}</a>
+    <div class="post_meta">
+      <span>{{ article.author }}</span>
+      {% if blog.comments_enabled? %}
+      <span><a href="{{ article.url }}#comments">/ {{ 'blogs.comments.with_count' | t: count: article.comments_count }}</a></span>
+      {% endif %}
+    </div>
+  </div>
+</div>

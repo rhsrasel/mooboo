@@ -1,0 +1,29 @@
+<div class="col-lg-4">
+  <div class="banner_slider_section">
+    <div class="row ">
+      {%- for block in section.blocks -%}{%- case block.type -%}
+      {%- when 'banner' -%}{%- assign bset = block.settings -%}
+      <div class="col-lg-{{ bset.ban_col }} col-md-{{ bset.ban_col }} col-sm-12">
+        <div class="banner_area banner_top">
+          <div class="banner_thumb">
+            <a href="{{ bset.ban_url }}">
+              {%- if bset.ban_img -%}
+              <img alt="{{ image.alt }}" src="{{ bset.ban_img | img_url: 'master' }}">
+              {%- else -%}
+              <img alt="placeholder-img" src="https://via.placeholder.com/630x386">
+              {%- endif -%}
+            </a>
+            {%- if bset.show_content -%}
+            <div class="banner_content">
+              {%- if bset.title1 != '' -%}
+              <h1 style="color:{{ sset.ban_t1_color }};font-size:{{ sset.ban_t1_font_size }}px;">{{ bset.title1 }}</h1>{%- endif -%}
+
+              {%- if bset.title2 != '' -%}
+              <h3 style="color:{{ sset.ban_t2_color }};font-size:{{ sset.ban_t2_font_size }}px;">{{ bset.title2 }}</h3>{%- endif -%}
+            </div>{%- endif -%}
+          </div>
+        </div>
+      </div>{%- endcase -%}{%- endfor -%}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+{%- if product.description contains '[affiliate_link]' -%}
+<div class="product_variant single_product_affi">
+  {%- include 'affiliate-product-cart-action' -%}
+</div>
+{%- else -%}
+<div class="product_variant quantity">
+  <label>{{ section.settings.qty_title }}</label>
+  <input type="text" value="1" name="quantity" class="cart-plus-minus-box">
+
+  {% if product.available %}
+  {% if settings.product_cart_type == 'ajax_spin_cart' %}
+  <button type="submit" class="ajax-spin-cart" id="AddToCart">
+    <span>
+      <span class="cart-title" id="AddToCartText">{{ settings.cart_button_title }}</span>
+      <span class="cart-loading">{{ settings.wait_title }}</span>
+      <span class="cart-added">{{ settings.added_title }}</span>
+      <span class="cart-unavailable">{{ settings.unavailable_title }}</span>
+    </span>
+  </button>
+  {% elsif settings.product_cart_type == 'ajax_popup_cart' or settings.product_cart_type == 'without_ajax_cart' %}
+  <button type="submit" id="AddToCart">
+    <span><span class="cart-title" id="AddToCartText">{{ settings.cart_button_title }}</span></span>
+  </button>
+  {% endif %}
+  {% unless settings.product_cart_type == 'without_ajax_cart' %}
+  <script>
+    jQuery('#AddToCart').click(function(e) {
+      e.preventDefault();
+      Shopify.addItemFromFormStart('AddToCartForm', {{ product.id }});
+                                   }); 
+  </script>
+  {% endunless %}
+  {% else %}
+  <button class="cart-disable" type="button">
+    <span class="cart-text">{{ settings.soldout_button_title }}</span>
+  </button>
+  {% endif %}
+</div>
+
+{%- if product.available and section.settings.dynamic_checkout_button_enable -%}
+<div class="mb-20 dynamic_checkout_btn">{{ form | payment_button }}</div>
+{%- endif -%}{%- endif -%}

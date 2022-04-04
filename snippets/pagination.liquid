@@ -1,0 +1,34 @@
+{% if paginate.pages > 1 %}
+<div class="shop_toolbar t_bottom theme-default-pagination">
+  <nav class="pagination">
+    <ul>
+      {% if paginate.previous %}
+      <li class="prev"><a href="{{ paginate.previous.url }}" aria-label="Previous">{{ settings.pagination_prev_title }}</a></li>
+      {% else %}
+      <li class="disabled prev"><a href="#">{{ settings.pagination_prev_title }}</a></li>
+      {% endif %}
+      {% for part in paginate.parts %}
+      {% if part.is_link %}
+      <li><a href="{{ part.url }}" title="">{{ part.title }}</a></li>
+      {% else %}
+      {% if part.title == paginate.current_page %}
+      <li class="current"><a href="">{{ part.title }}</a></li>
+      {% else %}
+      <li><a href="#">{{ part.title }}</a></li>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+      {% if paginate.next %}
+      <li class="next"><a href="{{ paginate.next.url }}" title="{{ paginate.next.title }}">{{ settings.pagination_next_title }}</a></li>
+      {% else %}
+      <li class="disabled next"><a href="#">{{ settings.pagination_next_title }}</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+
+
+<script>
+  $(".theme-default-pagination .disabled a").removeAttr("href");
+  $(".theme-default-pagination li.active a").removeAttr("href");
+</script>{% endif %}

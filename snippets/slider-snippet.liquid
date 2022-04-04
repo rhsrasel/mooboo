@@ -1,0 +1,21 @@
+{%- for block in section.blocks -%}{%- case block.type -%}
+{%- when 'slide' -%}{%- assign bset = block.settings -%}
+<div class="single_slider{% if bset.c_position == 'left' %} slider_one{% elsif bset.c_position == 'center' %} slider_three{% else %} slider_one slider_right{% endif %}" 
+     style="background:url({%- if bset.bg_img -%}{{ bset.bg_img | img_url: 'master' }}{%- else -%}https://via.placeholder.com/1920x759{%- endif -%}) center center/cover no-repeat;">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-12">
+        <div class="slider_content">
+          {%- if bset.slider_img -%}
+          <img src="{{ bset.slider_img | img_url: 'master' }}" alt="{{ image.alt }}">{%- endif -%}
+          
+          {%- if bset.title1 != '' -%}
+          <p style="color:{{ sset.title1_color }};font-size:{{ sset.title1_font_size }}px;">{{ bset.title1 }}</p>{%- endif -%}
+          
+          {%- if bset.btn != '' -%}
+          <a href="{{ bset.btn_url }}">{{ bset.btn }}</a>{%- endif -%}
+        </div>    
+      </div>
+    </div>
+  </div>
+</div>{%- endcase -%}{%- endfor -%}

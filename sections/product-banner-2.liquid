@@ -1,0 +1,393 @@
+{%- assign sset = section.settings -%}
+     
+<div id="{{ sset.section_id }}">
+  <div class="categories_area categories_1">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="categories_thumb">
+            <a href="{{ sset.btn_url }}">
+              {%- if sset.ban_img -%}
+              <img src="{{ sset.ban_img | img_url: 'master' }}" alt="{{ image.alt }}">
+              {%- else -%}
+              <img src="https://via.placeholder.com/930x440" alt="{{ image.alt }}">
+              {%- endif -%}
+            </a>
+            <div class="categories_content{% if sset.content_pos == 'left' %} content_left{% endif %}">
+              {%- if sset.title1 != '' -%}
+              <h4 style="color: {{ sset.title1_color }};font-size: {{ sset.title1_font_size }}px;">{{ sset.title1 }}</h4>{%- endif -%}
+
+              {%- if sset.title2 != '' -%}
+              <h2 style="color: {{ sset.title2_color }};font-size: {{ sset.title2_font_size }}px">{{ sset.title2 }}</h2>{%- endif -%}          
+
+              {%- if sset.title3 != '' -%}
+              <p style="color: {{ sset.title3_color }};font-size: {{ sset.title3_font_size }}px">{{ sset.title3 }}</p>{%- endif -%}
+
+              {%- if sset.btn != '' -%}
+              <a href="{{ sset.btn_url }}">{{ sset.btn }}</a>{%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{%- style -%}
+  #{{ sset.section_id }} .categories_content a {
+    font-size: {{ sset.btn_font_size }}px;
+    color: {{ sset.btn_color }};
+    border-bottom: 2px solid {{ sset.btn_border_color }};
+  }
+  #{{ sset.section_id }} .categories_content a:hover {
+    color: {{ sset.btn_hover_color }};
+    border-bottom: 2px solid {{ sset.btn_hover_border_color }};
+  }
+{%- include 'section-settings' -%}
+{%- endstyle -%}
+
+
+
+{% schema %}
+  {
+    "name": "Product Banner 2",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_id",
+            "label": "Section ID",
+            "default": "product_1"
+        },
+        {
+            "type": "paragraph",
+            "content": "[Nav ID Example](https://)"
+        },
+        {
+            "type": "image_picker",
+            "id": "ban_img",
+            "label": "BG Image"
+        },
+        {
+            "type": "header",
+            "content": "Content"
+        },
+        {
+            "type": "radio",
+            "id": "content_pos",
+            "label": "Content Position",
+            "options": [
+                {
+                  "label": "Left Side",
+                  "value": "left"
+                },
+                {
+                  "label": "Right Side",
+                  "value": "right"
+                }
+            ],
+            "default": "right"
+        },
+        {
+            "type": "text",
+            "id": "title1",
+            "label": "Title 1",
+            "default": "Trending Products"
+        },
+        {
+            "type": "text",
+            "id": "title2",
+            "label": "Title 2",
+            "default": "Flex Hooded Tee"
+        },
+        {
+            "type": "textarea",
+            "id": "title3",
+            "label": "Description",
+            "default": "Posuere sociis eu libero vivamus convallis eros pede torquent vestibulum aenean."
+        },
+        {
+            "type": "text",
+            "id": "btn",
+            "label": "Button Text",
+            "default": "Discover Now"
+        },
+        {
+            "type": "url",
+            "id": "btn_url",
+            "label": "Button URL",
+            "default": "\/"
+        },
+        {
+            "type": "header",
+            "content": "Font Size"
+        },
+        {
+            "type": "paragraph",
+            "content": "Don't add 'px' unit. Just put number."
+        },
+        {
+            "type": "number",
+            "id": "title1_font_size",
+            "label": "Title 1",
+            "default": 24
+        },
+        {
+            "type": "number",
+            "id": "title2_font_size",
+            "label": "Title 2",
+            "default": 70
+        },
+        {
+            "type": "number",
+            "id": "title3_font_size",
+            "label": "Description",
+            "default": 17
+        },
+        {
+            "type": "number",
+            "id": "btn_font_size",
+            "label": "Button",
+            "default": 16
+        },
+        {
+            "type": "header",
+            "content": "Color"
+        },
+        {
+            "type": "color",
+            "id": "title1_color",
+            "label": "Title 1 Color",
+            "default": "#242424"
+        },
+        {
+            "type": "color",
+            "id": "title2_color",
+            "label": "Title 2 Color",
+            "default": "#242424"
+        },
+        {
+            "type": "color",
+            "id": "title3_color",
+            "label": "Description Color",
+            "default": "#242424"
+        },
+        {
+            "type": "color",
+            "id": "btn_color",
+            "label": "Button Color",
+            "default": "#242424"
+        },
+        {
+            "type": "color",
+            "id": "btn_border_color",
+            "label": "Button Border Color",
+            "default": "#242424",
+            "info": "Don't want? Make color 'None'"
+        },
+        {
+            "type": "color",
+            "id": "btn_hover_color",
+            "label": "Button Hover Color",
+            "default": "#ff6a28"
+        },
+        {
+            "type": "color",
+            "id": "btn_hover_border_color",
+            "label": "Button Hover Border Color",
+            "default": "#ff6a28"
+        }
+	],
+    "blocks":[	
+	   {
+          "type": "section_padding",
+          "name": "Section Padding",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 100
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 80
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_padding_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Padding Bottom",
+			  "unit": "px",
+			  "default": 60
+			}
+          ]
+       },
+	   {
+          "type": "section_margin",
+          "name": "Section Margin",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			}
+          ]
+       },
+	   {
+          "type": "section_background",
+          "name": "Section Background",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "image_picker",
+			  "id": "section_bg_image",
+			  "label": "BG Image"
+			},
+			{
+			  "type": "color",
+			  "id": "section_bg_color",
+			  "label": "BG Color",
+			  "default": "#ffffff"
+			}
+          ]
+       }
+	],
+	"presets":[
+		{
+			"name": "Product Banner 2",
+			"category": "2. Banner"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

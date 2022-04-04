@@ -1,0 +1,372 @@
+{%- assign sset = section.settings -%}
+{%- assign header_font = sset.header_font -%}
+{%- assign paragraph_font = sset.paragraph_font -%}
+
+<div class="slider_area home_four_slider owl-carousel" id="{{ sset.section_id }}">
+  {%- for block in section.blocks -%}{%- assign bset = block.settings -%}
+  <div class="single_slider slider_three" style="background:url({%- if bset.bg_img -%}{{ bset.bg_img | img_url: 'master' }}{%- else -%}https://via.placeholder.com/1920x759{%- endif -%}) center center/cover no-repeat;">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-12">
+          <div class="slider_content">
+            {%- if bset.title1 != '' -%}
+            <h1 style="color:{{ sset.title1_color }};font-size:{{ sset.title1_font_size }}px;">{{ bset.title1 }}</h1>{%- endif -%}
+            
+            {%- if bset.title2 != '' -%}
+            <h2 style="color:{{ sset.title2_color }};font-size:{{ sset.title2_font_size }}px;">{{ bset.title2 }}</h2>{%- endif -%}
+
+            {%- if bset.btn != '' -%}
+            <a href="{{ bset.btn_url }}">{{ bset.btn }}</a>{%- endif -%}
+          </div>    
+        </div>
+      </div>
+    </div>
+  </div>{%- endfor -%}
+</div>
+
+
+
+
+{% style %}
+  {{ header_font | font_face }}
+  {{ paragraph_font | font_face }}  
+
+  .slider_area .slider_content h1, .slider_area .slider_content h2 {
+    font-family: {{ header_font.family }}, {{ header_font.fallback_families }};
+    font-weight: {{ header_font.weight }};
+    font-style: {{ header_font.style }};
+    line-height: 1;
+  }  
+  .slider_area .slider_content a {
+    color: {{ sset.btn_color }};
+    border-color: {{ sset.btn_border_color }};
+    font-family: {{ paragraph_font.family }}, {{ header_font.fallback_families }};
+    font-weight: {{ paragraph_font.weight }};
+    font-style: {{ paragraph_font.style }};
+    font-size: {{ sset.btn_font_size }}px;
+  }  
+  .slider_area .slider_content a:hover {
+    color: {{ sset.btn_hover_color }};
+    border-color: {{ sset.btn_hover_border_color }};
+  }
+  .slider_area.owl-carousel .owl-nav div {
+  	color: {{ sset.nav_color }};
+  }
+  .slider_area.owl-carousel .owl-nav div:hover {
+  	color: {{ sset.nav_hover_color }};
+  }
+  {% if sset.show_controlnav %}
+  .slider_area.owl-carousel .owl-dots .owl-dot {
+    background: {{ sset.controlnav_color }};
+  }
+  .slider_area.owl-carousel .owl-dots .owl-dot.active {
+    background: {{ sset.active_controlnav_color }};
+  }
+  {% else %}
+  .slider_area.owl-carousel .owl-dots .owl-dot {
+    display: none;
+  }{% endif %}
+
+{%- include 'section-settings' -%}
+{% endstyle %}
+
+
+
+<script>
+  $('.slider_area').owlCarousel({
+    {% if settings.rtl_enable %}
+    rtl: true,
+    {% endif %}
+    navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+    animateOut: 'fadeOut',
+    autoplay: true,
+    loop: true,
+    nav: true,
+    autoplay: {% if sset.slider_autoplay %}true{% else %}false{% endif %},
+    autoplayTimeout: 5000,
+    items: 1,
+    dots:true
+  });
+</script>
+
+
+
+{% schema %}
+  {
+    "name": "Slider Bottom Content",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_id",
+            "label": "Section ID",
+            "default": "slider-bottom"
+        },
+        {
+          "type": "checkbox",
+          "id": "slider_autoplay",
+          "label": "Enable Slider Autoplay",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Font Family"
+        },
+		{
+          "type": "font_picker",
+          "id": "header_font",
+          "label": "Title",
+          "default": "libre_franklin_n4"
+        },
+		{
+          "type": "font_picker",
+          "id": "paragraph_font",
+          "label": "Button",
+          "default": "libre_franklin_n4"
+        },        
+		{
+          "type": "header",
+          "content": "Font Size"
+        },
+        {
+          "type": "range",
+          "id": "title1_font_size",
+          "label": "Title 1",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "px",
+          "default": 46
+        },
+        {
+          "type": "range",
+          "id": "title2_font_size",
+          "label": "Title 2",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "px",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "btn_font_size",
+          "label": "Button",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "header",
+          "content": "Color"
+        },
+        {
+          "type": "color",
+          "id": "title1_color",
+          "label": "Title 1",
+          "default": "#fff"
+        }, 
+        {
+          "type": "color",
+          "id": "title2_color",
+          "label": "Title 2",
+          "default": "#fff"
+        }, 
+        {
+          "type": "color",
+          "id": "btn_color",
+          "label": "Button Text",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "btn_border_color",
+          "label": "Button Border",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "btn_hover_color",
+          "label": "Button Hover",
+          "default": "#ff6a28"
+        },
+        {
+          "type": "color",
+          "id": "btn_hover_border_color",
+          "label": "Button Hover Border",
+          "default": "#ff6a28"
+        },
+        {
+          "type": "header",
+          "content": "Navigation & Control Nav"
+        },
+        {
+          "type": "color",
+          "id": "nav_color",
+          "label": "Navigation Color",
+          "default": "#5f5f5f"
+        },
+        {
+          "type": "color",
+          "id": "nav_hover_color",
+          "label": "Navigation Hover Color",
+          "default": "#fff"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_controlnav",
+          "label": "Show Control Nav",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "controlnav_color",
+          "label": "Color",
+          "default": "#ddd"
+        },
+        {
+          "type": "color",
+          "id": "active_controlnav_color",
+          "label": "Active Color",
+          "default": "#ff6a28"
+        }
+	],
+    "blocks": [
+		{
+			"type": "slide",
+			"name": "Slide",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "bg_img",
+					"label": "BG Image"
+				},
+				{
+					"type": "header",
+					"content": "Content"
+				},
+				{
+					"type": "textarea",
+					"id": "title1",
+					"label": "Title 1",
+					"default": "Game of Thrones Jaime Lannister"
+				},
+				{
+					"type": "textarea",
+					"id": "title2",
+					"label": "Title 2",
+					"default": "Themed Sneakers"
+				},
+				{
+					"type": "text",
+					"id": "btn",
+					"label": "Button",
+					"default": "Discover Now"
+				},
+				{
+					"type": "url",
+					"id": "btn_url",
+					"label": "Button URL",
+					"default": "\/collections\/all"
+				}
+			]			
+		},
+	   {
+          "type": "section_margin",
+          "name": "Section Margin",
+		  "limit": 1,
+          "settings": [
+            {
+			  "type": "header",
+			  "content": "Large/Desktop Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Tablet Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_md",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "header",
+			  "content": "Mobile Device"
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_top_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Top",
+			  "unit": "px",
+			  "default": 0
+			},
+			{
+			  "type": "range",
+			  "id": "section_margin_bottom_xs",
+			  "min": 0,
+			  "max": 150,
+			  "step": 5,
+			  "label": "Margin Bottom",
+			  "unit": "px",
+			  "default": 0
+			}
+          ]
+       }
+	],
+	"presets":[
+		{
+			"name": "Slider Bottom Content",
+			"category": "1. Slider",
+			"blocks":[
+				{"type": "slide"},
+				{"type": "slide"}
+			]
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

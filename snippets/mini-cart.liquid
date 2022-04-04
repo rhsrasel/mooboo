@@ -1,0 +1,50 @@
+{% assign itemStyle = '' %}{% if cart.item_count == 0 %}{% assign itemStyle = ' style="display:none;"' %}{% endif %}
+{% assign itemEmpty = '' %}{% if cart.item_count == 0 %}{% assign itemEmpty = ' style="display:block;"' %}{% endif %}
+{%- assign item_count = cart.item_count -%}
+
+<a href="#" class="remove_href"><i class="fa fa-shopping-basket"></i><span class="bigcounter">{{ item_count }}</span> {{ bset.cart_item_title }}</a>
+
+<div class="mini_cart">
+  <div class="mini_cart_items" {{ itemStyle }}>
+    <ul class="single-cart-item-loop">
+      {% for item in cart.items %}
+      <li class="cart_item bottom">
+        <div class="cart_img">
+          <a href="{{ item.url }}"><img src="{{ item | img_url: 'small' }}" alt="{{ item.image.alt }}"></a>
+        </div>
+        <div class="cart_info">
+          <a href="{{ item.url }}">{{ item.title }}</a>
+          <span><span class="mini_cart_qty">{{ item.quantity }}x {{ item.price | money }}</span></span>
+        </div>
+        <div class="cart_remove">
+          <a href="javascript:void(0);" onclick="Shopify.removeItem({{ item.variant.id }})"><i class="ion-android-close"></i></a>
+        </div>
+      </li>{% endfor %}
+    </ul>
+
+    <div class="cart__table">
+      <table>
+        <tbody>
+          <tr>
+            <td class="text-{% if settings.rtl_enable %}right{% else %}left{% endif %}">{{ bset.cart_total_title }}</td>
+            <td class="text-{% if settings.rtl_enable %}left{% else %}right{% endif %} shop-total shopping-cart__total">{{ cart.total_price | money }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cart_button view_cart">
+      <a href="/cart">{{ bset.view_cart_title }}</a>
+    </div>
+    <div class="cart_button checkout">
+      <a href="/checkout">{{ bset.checkout_title }}</a>
+    </div>
+  </div>
+
+  <div class="cart_empty_title" {{ itemEmpty }}>
+    <h5 class="mb-20">{{ bset.empty_cart_title }}</h5>
+    <div class="cart_button checkout">
+      <a href="/collections/all">{{ bset.continue_shopping_title }}</a>
+    </div>
+  </div>
+</div>

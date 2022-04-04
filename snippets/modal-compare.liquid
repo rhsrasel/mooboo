@@ -1,0 +1,148 @@
+<div class="loading-modal compare_modal">...</div>
+<div class="ajax-success-compare-modal compare_modal" id="moda-compare" tabindex="-1" role="dialog" style="display:none">
+  <div class="overlay"> </div>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content content" id="compare-modal">
+      <div class="modal-header">
+        <div class="modal-close">
+          <span class="compare-modal-close"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <h3 class="modal-title">{{ settings.compare_title }}</h3>
+      </div>
+      <div class="modal-body">
+        <div class="table-wrapper">
+          <table class="table table-hover">
+            <thead>
+              <tr class="th-compare">
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="table-compare">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% style %}
+.loading-modal {
+    background: #fff url({{ 'loading.gif' | asset_url }}) center 14px no-repeat;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    position: fixed;
+    top: 50%!important;
+    bottom: auto;
+    left: 50% !important;
+    right: auto;
+    width: 56px;
+    height: 56px;
+    margin-left: -28px;
+    margin-top: -28px;
+    overflow: hidden;
+    padding: 0;
+    text-align: center;
+    text-indent: -999em;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    display: block;
+}
+
+.compare_modal .close-modal {
+    float: right;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+}
+.compare_modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10000;
+    display: none;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+ 
+}
+#compare-modal #table-compare th { font-weight:normal; }
+#compare-modal .close-modal { bottom:auto;top:-15px;right:-7px;font-size:30px; }
+
+#compare-modal .product_price { margin-bottom:10px; }
+
+#compare-modal .product_price strong { margin-right:7px; }
+
+#compare-modal table .btn { padding:10px 24px;font-size:13px; }
+
+#compare-modal table button,#compare-modal table p { margin:0; }
+
+#table-compare th,#table-compare td { text-align:center; }
+#table-compare td img { margin-bottom:5px; }
+.compare_modal .th-compare th { text-align:center; }
+.compare_modal h4 { text-align:center;margin:0;padding:20px; }
+.compare-modal-close {
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    font-size: 30px;
+	{% if settings.rtl_enable %}
+    left: 25px;
+	{% else %}
+    right: 25px;
+	{% endif %}
+}
+#moda-compare .modal-dialog {
+	position: relative;
+	width: auto;
+	margin: 30px auto;
+	max-width: 65%;
+}
+.compare_modal h4 {
+	font-size: 3.6rem;
+	line-height: 1.2;
+	margin-bottom: 17px;
+	font-family: "Playfair Display", serif;
+	font-weight: 700;
+	font-style: normal;
+	display: inline-block;
+	margin-bottom: 0;
+	padding-top: 8px;
+}
+#compare-modal .modal-header {
+	justify-content: center;
+	position: relative;
+}
+#compare-modal th button,#compare-modal tr td {
+	text-align: center;
+	float: inherit;
+}
+#compare-modal .product-price strong {
+	margin-right: 7px;
+}
+#compare-modal td a:hover, #compare-modal  .product-price,#compare-modal .modal-close:hover .fa.fa-times-circle {
+	color: #d82e2e;
+}
+#compare-modal td a {
+	text-transform: uppercase;
+	font-size: 12px;
+	color: #727272;
+	font-weight: normal;
+}
+#compare-modal .product-price {
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+#compare-modal .modal-close .fa.fa-times-circle {
+	transition: all 0.3s ease-out 0s;
+}
+#compare-modal td a:hover, #compare-modal .product-price, #compare-modal .modal-close:hover .fa.fa-times-circle {
+	color: {{ settings.theme_color }};
+}
+{% endstyle %}

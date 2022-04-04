@@ -1,0 +1,19 @@
+{%- for block in section.blocks -%}{%- case block.type -%}
+{%- when 'slide' -%}{%- assign bset = block.settings -%}
+<div class="single_slider slider_one" style="background:url({%- if bset.bg_img -%}{{ bset.bg_img | img_url: 'master' }}{%- else -%}https://via.placeholder.com/1920x759{%- endif -%}) center center/cover no-repeat;">
+  <div class="slider_content_inner">
+    <div class="slider_content">
+      {%- if bset.title1 != '' -%}
+      <h2 style="color:{{ sset.title1_color }};font-size:{{ sset.title1_font_size }}px;">{{ bset.title1 }}</h2>{%- endif -%}
+
+      {%- if bset.title2 != '' -%}
+      <h1 style="color:{{ sset.title2_color }};font-size:{{ sset.title2_font_size }}px;">{{ bset.title2 }}</h1>{%- endif -%}
+
+      {%- if bset.description != '' -%}
+      <p style="color:{{ sset.description_color }};font-size:{{ sset.description_font_size }}px;">{{ bset.description }}</p>{%- endif -%}                
+
+      {%- if bset.btn != '' -%}
+      <a href="{{ bset.btn_url }}">{{ bset.btn }}</a>{%- endif -%}
+    </div>  
+  </div>     
+</div>{%- endcase -%}{%- endfor -%}
